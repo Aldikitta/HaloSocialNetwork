@@ -1,4 +1,4 @@
-package com.aldikitta.hollahalo.ui.theme
+package com.aldikitta.hollahalo.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build

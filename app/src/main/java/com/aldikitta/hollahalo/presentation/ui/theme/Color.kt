@@ -1,4 +1,4 @@
-package com.aldikitta.hollahalo.ui.theme
+package com.aldikitta.hollahalo.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
