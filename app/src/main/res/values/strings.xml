@@ -2,4 +2,8 @@
     <string name="app_name">HollaHalo</string>
     <string name="branding">Connecting People</string>
     <string name="login">Let\'s Login First</string>
+    <string name="enter_username">Enter Username</string>
+    <string name="username">Username</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="password">Password</string>
 </resources>
