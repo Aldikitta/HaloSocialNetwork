@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">HollaHalo</string>
     <string name="branding">Connecting People</string>
+    <string name="login">Let\'s Login First</string>
 </resources>

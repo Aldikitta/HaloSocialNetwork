@@ -1,26 +1,31 @@
 package com.aldikitta.hollahalo.presentation.login
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.aldikitta.hollahalo.R
+import com.aldikitta.hollahalo.presentation.ui.theme.spacing
 
 @Composable
 fun LoginScreen(
     navController: NavController
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = MaterialTheme.spacing.small),
+        verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Hello Sayang",
-            style = MaterialTheme.typography.titleLarge
+            text = stringResource(id = R.string.login),
+            style = MaterialTheme.typography.displaySmall
         )
     }
-
 }
