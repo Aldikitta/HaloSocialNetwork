@@ -1,6 +1,5 @@
 package com.aldikitta.hollahalo.presentation.login
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +25,6 @@ import androidx.navigation.NavController
 import com.aldikitta.hollahalo.R
 import com.aldikitta.hollahalo.presentation.composable.SocialTextField
 import com.aldikitta.hollahalo.presentation.ui.theme.spacing
-import timber.log.Timber
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -34,18 +32,7 @@ fun LoginScreen(
     navController: NavController,
     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
-    val usernameText = loginViewModel.usernameText.collectAsStateWithLifecycle()
-    val passwordText = loginViewModel.passwordText.collectAsStateWithLifecycle()
-    val toggleVisibility = loginViewModel.toggleVisibility.collectAsStateWithLifecycle()
-
-//    val passwordVisible by remember {
-//        toggleVisibility
-////        mutableStateOf(false)
-//    }
-
-
-    val isPasswordVisible: Boolean = false
-    val onVisibilityChange: (Boolean) -> Unit = {}
+    val loginUiState by loginViewModel.loginUiState.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
@@ -58,7 +45,7 @@ fun LoginScreen(
             style = MaterialTheme.typography.displaySmall
         )
         SocialTextField(
-            text = usernameText.value.usernameText,
+            text = loginUiState.usernameText,
             onValueChange = { username ->
                 loginViewModel.onEvent(LoginUiEvent.UsernameInputText(username))
             },
@@ -72,8 +59,9 @@ fun LoginScreen(
             },
             keyboardType = KeyboardType.Text
         )
+
         SocialTextField(
-            text = passwordText.value.passwordText,
+            text = loginUiState.passwordText,
             onValueChange = { password ->
                 loginViewModel.onEvent(LoginUiEvent.PasswordInputText(password))
             },
@@ -88,13 +76,16 @@ fun LoginScreen(
             keyboardType = KeyboardType.Password,
             trailingIcon = {
                 IconButton(onClick = {
-                    loginViewModel.onEvent(LoginUiEvent.ToggleVisibility(toggleVisibility.value))
+                    loginViewModel.onEvent(LoginUiEvent.ToggleVisibilityClick(loginUiState.toggleVisibility))
                 }) {
-                    Icon(imageVector = if (toggleVisibility.value) Icons.Filled.Add else Icons.Filled.Lock, contentDescription = "")
+                    Icon(
+                        imageVector = if (loginUiState.toggleVisibility) Icons.Filled.Add else Icons.Filled.Lock,
+                        contentDescription = ""
+                    )
                 }
             },
             visualTransformation = when {
-                toggleVisibility.value -> PasswordVisualTransformation()
+                loginUiState.toggleVisibility -> PasswordVisualTransformation()
                 else -> VisualTransformation.None
             }
         )
