@@ -3,6 +3,7 @@ package com.aldikitta.hollahalo.presentation.composable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +23,8 @@ fun SocialTextField(
     leadingIcon: @Composable() (() -> Unit)?,
     keyboardType: KeyboardType = KeyboardType.Text,
     trailingIcon: @Composable() (() -> Unit)? = null,
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    errorMessage: String = ""
 ) {
     OutlinedTextField(
         modifier = modifier.fillMaxWidth(),
@@ -41,6 +43,13 @@ fun SocialTextField(
         ),
         singleLine = true,
         trailingIcon = trailingIcon,
-        visualTransformation = visualTransformation
-    )
+        visualTransformation = visualTransformation,
+
+        )
+    if (isError) {
+        Text(
+            text = errorMessage,
+            color = MaterialTheme.colorScheme.error,
+        )
+    }
 }

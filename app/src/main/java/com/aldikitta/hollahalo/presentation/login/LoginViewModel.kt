@@ -9,22 +9,11 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
 
 ) : ViewModel() {
-
     private val _loginUiState = MutableStateFlow(LoginUiState())
     val loginUiState = _loginUiState.asStateFlow()
 
     private val _eventFlow = MutableSharedFlow<LoginUiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
-
-//    fun validateForm(username: String, password: String) {
-//        val passwordRegex = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,}".toRegex()
-//
-//        validatePassword = passwordRegex.matches()
-//    }
-
-    fun showPassword(isVisible: Boolean = false) {
-
-    }
 
     fun onEvent(loginUiEvent: LoginUiEvent) {
         when (loginUiEvent) {
@@ -45,7 +34,12 @@ class LoginViewModel @Inject constructor(
 
             }
             is LoginUiEvent.ValidateForm -> {
-
+                val passwordRegex =
+                    "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,}".toRegex()
+                _loginUiState.value = loginUiState.value.copy(
+                    validateUsername = loginUiState.value.usernameText.isNotBlank(),
+                    validatePassword = passwordRegex.matches(loginUiState.value.passwordText)
+                )
             }
             is LoginUiEvent.ToggleVisibilityClick -> {
                 _loginUiState.value = loginUiState.value.copy(

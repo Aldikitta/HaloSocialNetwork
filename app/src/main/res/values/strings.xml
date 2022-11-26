@@ -7,4 +7,6 @@
     <string name="enter_password">Enter Password</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
+    <string name="validate_username">Username can\'t be empty</string>
+    <string name="validate_password">Must mix capital and non-capital letters, a number, special character and a minimum length of 8</string>
 </resources>

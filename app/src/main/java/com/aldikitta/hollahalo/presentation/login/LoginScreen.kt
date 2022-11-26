@@ -8,10 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -57,7 +54,9 @@ fun LoginScreen(
                     contentDescription = stringResource(id = R.string.username)
                 )
             },
-            keyboardType = KeyboardType.Text
+            keyboardType = KeyboardType.Text,
+            isError = !loginUiState.validateUsername,
+            errorMessage = stringResource(id = R.string.validate_username)
         )
 
         SocialTextField(
@@ -87,8 +86,21 @@ fun LoginScreen(
             visualTransformation = when {
                 loginUiState.toggleVisibility -> PasswordVisualTransformation()
                 else -> VisualTransformation.None
-            }
+            },
+            isError = !loginUiState.validatePassword,
+            errorMessage = stringResource(id = R.string.validate_password)
         )
+
+        Button(onClick = {
+            loginViewModel.onEvent(
+                LoginUiEvent.ValidateForm(
+                    username = loginUiState.usernameText,
+                    password = loginUiState.passwordText
+                )
+            )
+        }) {
+
+        }
     }
 
 //    LoginScreenContent(
