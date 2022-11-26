@@ -22,6 +22,24 @@ class LoginViewModel @Inject constructor(
     private val _passwordText = MutableStateFlow(LoginUiState(passwordText = ""))
     val passwordText = _passwordText.asStateFlow()
 
+    private var validatePassword = MutableStateFlow(true)
+
+    private val _showPassword = MutableStateFlow(false)
+    val showPassword = _showPassword.asStateFlow()
+
+    private val _toggleVisibility = MutableStateFlow(false)
+    val toggleVisibility = _toggleVisibility.asStateFlow()
+
+//    fun validateForm(username: String, password: String) {
+//        val passwordRegex = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,}".toRegex()
+//
+//        validatePassword = passwordRegex.matches()
+//    }
+
+    fun showPassword(isVisible: Boolean = false) {
+
+    }
+
     fun onEvent(loginUiEvent: LoginUiEvent) {
         when (loginUiEvent) {
             is LoginUiEvent.UsernameInputText -> {
@@ -39,6 +57,19 @@ class LoginViewModel @Inject constructor(
             }
             is LoginUiEvent.ClickLogin -> {
 
+            }
+            is LoginUiEvent.ValidateForm -> {
+
+            }
+            is LoginUiEvent.ToggleVisibility -> {
+                _toggleVisibility.value = !_toggleVisibility.value
+            }
+            is LoginUiEvent.ShowPassword -> {
+                if (_toggleVisibility.value) {
+                    _showPassword.value
+                } else {
+                    _showPassword.value = true
+                }
             }
         }
     }
