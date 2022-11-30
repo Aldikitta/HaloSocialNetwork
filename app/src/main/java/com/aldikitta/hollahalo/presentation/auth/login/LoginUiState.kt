@@ -1,4 +1,4 @@
-package com.aldikitta.hollahalo.presentation.login
+package com.aldikitta.hollahalo.presentation.auth.login
 
 import androidx.compose.runtime.Immutable
 
@@ -9,7 +9,7 @@ data class LoginUiState(
     val toggleVisibility: Boolean = false,
     val validateUsername: Boolean = true,
     val validatePassword: Boolean = true,
-
+    val emptyField: String = "",
 
     val validateForm: Boolean = false,
 

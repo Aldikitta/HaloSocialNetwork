@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.aldikitta.hollahalo.presentation.login.LoginScreen
+import com.aldikitta.hollahalo.presentation.auth.login.LoginScreen
 
 @Composable
 fun Navigation() {

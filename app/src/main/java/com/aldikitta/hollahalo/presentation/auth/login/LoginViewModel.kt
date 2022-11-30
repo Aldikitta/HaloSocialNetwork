@@ -1,4 +1,4 @@
-package com.aldikitta.hollahalo.presentation.login
+package com.aldikitta.hollahalo.presentation.auth.login
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +25,16 @@ class LoginViewModel @Inject constructor(
             is LoginUiEvent.PasswordInputText -> {
                 _loginUiState.value = loginUiState.value.copy(
                     passwordText = loginUiEvent.password
+                )
+            }
+            is LoginUiEvent.EmptyFieldUsername -> {
+                _loginUiState.value = loginUiState.value.copy(
+                    usernameText = loginUiState.value.emptyField,
+                )
+            }
+            is LoginUiEvent.EmptyFieldPassword -> {
+                _loginUiState.value = loginUiState.value.copy(
+                    passwordText = loginUiState.value.emptyField,
                 )
             }
             is LoginUiEvent.ShowSnackbar -> {

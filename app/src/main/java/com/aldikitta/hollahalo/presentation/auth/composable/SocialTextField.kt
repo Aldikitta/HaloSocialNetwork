@@ -1,15 +1,16 @@
-package com.aldikitta.hollahalo.presentation.composable
+package com.aldikitta.hollahalo.presentation.auth.composable
 
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
+import com.aldikitta.hollahalo.presentation.ui.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -20,14 +21,14 @@ fun SocialTextField(
     label: String = "",
     isError: Boolean = false,
     onValueChange: (String) -> Unit,
-    leadingIcon: @Composable() (() -> Unit)?,
+    leadingIcon: @Composable (() -> Unit)?,
     keyboardType: KeyboardType = KeyboardType.Text,
-    trailingIcon: @Composable() (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     errorMessage: String = ""
 ) {
     OutlinedTextField(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().padding(horizontal = MaterialTheme.spacing.small),
         value = text,
         onValueChange = onValueChange,
         label = {
@@ -44,12 +45,13 @@ fun SocialTextField(
         singleLine = true,
         trailingIcon = trailingIcon,
         visualTransformation = visualTransformation,
-
         )
+
     if (isError) {
         Text(
             text = errorMessage,
             color = MaterialTheme.colorScheme.error,
         )
     }
+    Spacer(modifier = modifier.height(MaterialTheme.spacing.medium))
 }
