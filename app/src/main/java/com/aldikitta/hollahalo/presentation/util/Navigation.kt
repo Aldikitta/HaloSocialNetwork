@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.aldikitta.hollahalo.presentation.auth.login.LoginScreen
+import com.aldikitta.hollahalo.presentation.auth.register.RegisterScreen
 
 @Composable
 fun Navigation() {
@@ -16,8 +17,8 @@ fun Navigation() {
         composable(route = Screen.LoginScreen.route) {
             LoginScreen(navController)
         }
-//        composable(route = Screen.RegisterScreen.route){
-//            RegisterScreen(navController)
-//        }
+        composable(route = Screen.RegisterScreen.route){
+            RegisterScreen(navController)
+        }
     }
 }

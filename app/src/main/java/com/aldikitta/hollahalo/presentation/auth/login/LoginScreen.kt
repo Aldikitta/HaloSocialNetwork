@@ -25,6 +25,7 @@ import com.aldikitta.hollahalo.R
 import com.aldikitta.hollahalo.presentation.auth.composable.GreetingAuth
 import com.aldikitta.hollahalo.presentation.auth.composable.SocialTextField
 import com.aldikitta.hollahalo.presentation.ui.theme.spacing
+import com.aldikitta.hollahalo.presentation.util.Screen
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -192,7 +193,11 @@ fun LoginScreen(
         ) {
             Text(text = stringResource(id = R.string.new_here))
             Text(
-                modifier = Modifier.clickable { },
+                modifier = Modifier.clickable {
+                    navController.navigate(Screen.RegisterScreen.route){
+//                        popUpToId { inclusive = true }
+                    }
+                },
                 text = stringResource(id = R.string.apply),
                 color = MaterialTheme.colorScheme.primary
             )
