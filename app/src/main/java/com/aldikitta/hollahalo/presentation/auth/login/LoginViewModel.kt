@@ -40,14 +40,16 @@ class LoginViewModel @Inject constructor(
             is LoginUiEvent.ShowSnackbar -> {
 
             }
-            is LoginUiEvent.ClickLogin -> {
-
+            is LoginUiEvent.ValidateUsername -> {
+                val minUsernameLength = 3
+                _loginUiState.value = loginUiState.value.copy(
+                    validateUsername = loginUiState.value.usernameText.isNotBlank() && loginUiState.value.usernameText.length >= minUsernameLength,
+                )
             }
-            is LoginUiEvent.ValidateForm -> {
+            is LoginUiEvent.ValidatePassword -> {
                 val passwordRegex =
                     "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,}".toRegex()
                 _loginUiState.value = loginUiState.value.copy(
-                    validateUsername = loginUiState.value.usernameText.isNotBlank(),
                     validatePassword = passwordRegex.matches(loginUiState.value.passwordText)
                 )
             }

@@ -52,6 +52,11 @@ fun LoginScreen(
                 text = loginUiState.usernameText,
                 onValueChange = { username ->
                     loginViewModel.onEvent(LoginUiEvent.UsernameInputText(username))
+                    loginViewModel.onEvent(
+                        LoginUiEvent.ValidateUsername(
+                            username = loginUiState.usernameText
+                        )
+                    )
                 },
                 hint = stringResource(id = R.string.enter_username),
                 label = stringResource(id = R.string.username),
@@ -61,7 +66,7 @@ fun LoginScreen(
                         contentDescription = stringResource(id = R.string.username)
                     )
                 },
-                keyboardType = KeyboardType.Text,
+                keyboardType = KeyboardType.Email,
                 isError = !loginUiState.validateUsername,
                 errorMessage = stringResource(id = R.string.validate_username),
                 trailingIcon = {
@@ -79,7 +84,14 @@ fun LoginScreen(
             SocialTextField(
                 text = loginUiState.passwordText,
                 onValueChange = { password ->
-                    loginViewModel.onEvent(LoginUiEvent.PasswordInputText(password))
+                    loginViewModel.onEvent(
+                        LoginUiEvent.PasswordInputText(password),
+                                      )
+                    loginViewModel.onEvent(
+                        LoginUiEvent.ValidatePassword(
+                            password = loginUiState.passwordText
+                        )
+                    )
                 },
                 hint = stringResource(id = R.string.enter_password),
                 label = stringResource(id = R.string.password),
@@ -104,36 +116,33 @@ fun LoginScreen(
                             loginViewModel.onEvent(LoginUiEvent.ToggleVisibilityClick(loginUiState.toggleVisibility))
                         }) {
                             Icon(
-                                imageVector = if (loginUiState.toggleVisibility) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
+                                imageVector = if (loginUiState.toggleVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                                 contentDescription = ""
                             )
                         }
                     }
                 },
-                visualTransformation = if (loginUiState.toggleVisibility) PasswordVisualTransformation() else VisualTransformation.None,
+                visualTransformation = if (loginUiState.toggleVisibility) VisualTransformation.None else PasswordVisualTransformation(),
                 isError = !loginUiState.validatePassword,
                 errorMessage = stringResource(id = R.string.validate_password)
             )
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
             Button(
                 onClick = {
-                    loginViewModel.onEvent(
-                        LoginUiEvent.ValidateForm(
-                            username = loginUiState.usernameText,
-                            password = loginUiState.passwordText
-                        )
-                    )
-                }) {
+
+                },
+                enabled = if (loginUiState.usernameText.isEmpty() || loginUiState.passwordText.isEmpty()) false else loginUiState.validateUsername && loginUiState.validatePassword
+            ) {
                 Text(text = stringResource(id = R.string.take_me_in))
             }
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
             Text(
                 text = stringResource(id = R.string.or_continue_with),
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.SemiBold,
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.outline
             )
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.extraLarge))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
             Row(
                 modifier = Modifier.fillMaxWidth(),
             ) {

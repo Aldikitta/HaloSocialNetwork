@@ -16,6 +16,8 @@ fun Navigation() {
         composable(route = Screen.LoginScreen.route) {
             LoginScreen(navController)
         }
-
+//        composable(route = Screen.RegisterScreen.route){
+//            RegisterScreen(navController)
+//        }
     }
 }

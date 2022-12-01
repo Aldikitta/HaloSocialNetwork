@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import com.aldikitta.hollahalo.presentation.ui.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -25,12 +26,20 @@ fun SocialTextField(
     keyboardType: KeyboardType = KeyboardType.Text,
     trailingIcon: @Composable (() -> Unit)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    errorMessage: String = ""
+    errorMessage: String = "",
+    maxLength: Int = 20
 ) {
     OutlinedTextField(
-        modifier = modifier.fillMaxWidth().padding(horizontal = MaterialTheme.spacing.small),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = MaterialTheme.spacing.small),
         value = text,
-        onValueChange = onValueChange,
+        onValueChange = {
+            if (it.length <= maxLength) {
+                onValueChange(it)
+
+            }
+        },
         label = {
             Text(text = label)
         },
@@ -45,13 +54,22 @@ fun SocialTextField(
         singleLine = true,
         trailingIcon = trailingIcon,
         visualTransformation = visualTransformation,
-        )
-
+        supportingText = {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Limit: ${text.length}/20",
+                textAlign = TextAlign.End,
+            )
+        }
+    )
     if (isError) {
         Text(
             text = errorMessage,
             color = MaterialTheme.colorScheme.error,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.bodyMedium
         )
     }
+
     Spacer(modifier = modifier.height(MaterialTheme.spacing.medium))
 }

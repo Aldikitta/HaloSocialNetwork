@@ -6,9 +6,10 @@ sealed class LoginUiEvent {
     data class ToggleVisibilityClick(val isToggleClick: Boolean): LoginUiEvent()
     object EmptyFieldUsername: LoginUiEvent()
     object EmptyFieldPassword: LoginUiEvent()
+    data class ValidateUsername(val username: String): LoginUiEvent()
+    data class ValidatePassword(val password: String): LoginUiEvent()
 
-    data class ValidateForm(val username: String, val password: String): LoginUiEvent()
     data class ShowSnackbar(val message: String): LoginUiEvent()
-    object ClickLogin: LoginUiEvent()
+
 
 }
