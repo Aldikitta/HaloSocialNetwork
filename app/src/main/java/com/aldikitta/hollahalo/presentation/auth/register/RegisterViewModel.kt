@@ -61,11 +61,37 @@ class RegisterViewModel @Inject constructor(
                     toggleVisibility = !registerUiState.value.toggleVisibility
                 )
             }
+            is RegisterUiEvent.ValidateEmail -> {
+                _registerUiState.value = registerUiState.value.copy(
+                    validateEmail = Patterns.EMAIL_ADDRESS.matcher(registerUiState.value.emailText)
+                        .matches(),
+                )
+            }
+            is RegisterUiEvent.ValidateUsername -> {
+                val minUsernameLength = 3
+                _registerUiState.value = registerUiState.value.copy(
+                    validateUsername = registerUiState.value.usernameText.isNotBlank() && registerUiState.value.usernameText.length >= minUsernameLength,
+                )
+            }
+            is RegisterUiEvent.ValidatePassword -> {
+                val passwordRegex =
+                    "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,}".toRegex()
+                _registerUiState.value = registerUiState.value.copy(
+                    validatePassword = passwordRegex.matches(registerUiState.value.passwordText)
+                )
+            }
+            is RegisterUiEvent.ValidateConfirmPassword -> {
+                _registerUiState.value = registerUiState.value.copy(
+                    validateConfirmPassword = registerUiState.value.passwordText == registerUiState.value.confirmPasswordText
+                )
+            }
+
             is RegisterUiEvent.ValidateForm -> {
                 val passwordRegex =
                     "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,}".toRegex()
                 _registerUiState.value = registerUiState.value.copy(
-                    validateEmail = Patterns.EMAIL_ADDRESS.matcher(registerUiState.value.emailText).matches(),
+                    validateEmail = Patterns.EMAIL_ADDRESS.matcher(registerUiState.value.emailText)
+                        .matches(),
                     validateUsername = registerUiState.value.usernameText.isNotBlank(),
                     validatePassword = passwordRegex.matches(registerUiState.value.passwordText),
                     validateConfirmPassword = registerUiState.value.confirmPasswordText == registerUiState.value.passwordText

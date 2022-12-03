@@ -1,26 +1,21 @@
 package com.aldikitta.hollahalo.presentation.auth.register
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Password
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -28,25 +23,23 @@ import androidx.navigation.NavController
 import com.aldikitta.hollahalo.R
 import com.aldikitta.hollahalo.presentation.auth.composable.GreetingAuth
 import com.aldikitta.hollahalo.presentation.auth.composable.SocialTextField
-import com.aldikitta.hollahalo.presentation.auth.login.LoginUiEvent
-import com.aldikitta.hollahalo.presentation.auth.login.LoginViewModel
 import com.aldikitta.hollahalo.presentation.ui.theme.spacing
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun RegisterScreen(
-    navController: NavController,
-    registerViewModel: RegisterViewModel = hiltViewModel()
+    navController: NavController, registerViewModel: RegisterViewModel = hiltViewModel()
 ) {
     val registerUiState by registerViewModel.registerUiState.collectAsStateWithLifecycle()
-
+    val scrollState = rememberScrollState()
     Box(
         modifier = Modifier.fillMaxSize(),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = MaterialTheme.spacing.small),
+                .padding(horizontal = MaterialTheme.spacing.small)
+                .verticalScroll(scrollState),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -54,10 +47,45 @@ fun RegisterScreen(
                 header = stringResource(id = R.string.welcome),
                 subHeader = stringResource(id = R.string.your_new_here),
             )
-            SocialTextField(
-                text = registerUiState.usernameText,
+            SocialTextField(text = registerUiState.emailText,
+                onValueChange = { email ->
+                    registerViewModel.onEvent(RegisterUiEvent.EmailInputText(email))
+                    registerViewModel.onEvent(
+                        RegisterUiEvent.ValidateEmail(
+                            email = registerUiState.emailText
+                        )
+                    )
+                },
+                hint = stringResource(id = R.string.enter_email),
+                label = stringResource(id = R.string.email),
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.Email,
+                        contentDescription = stringResource(id = R.string.email)
+                    )
+                },
+                keyboardType = KeyboardType.Email,
+                isError = !registerUiState.validateEmail,
+                errorMessage = stringResource(id = R.string.validate_email),
+                trailingIcon = {
+                    if (registerUiState.emailText.isNotEmpty()) {
+                        IconButton(onClick = { registerViewModel.onEvent(RegisterUiEvent.EmptyFieldEmail) }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Cancel,
+                                contentDescription = stringResource(R.string.empty_email_field)
+                            )
+                        }
+                    }
+                })
+
+            SocialTextField(text = registerUiState.usernameText,
                 onValueChange = { username ->
                     registerViewModel.onEvent(RegisterUiEvent.UsernameInputText(username))
+                    registerViewModel.onEvent(
+                        RegisterUiEvent.ValidateUsername(
+                            username = registerUiState.usernameText
+                        )
+                    )
                 },
                 hint = stringResource(id = R.string.enter_username),
                 label = stringResource(id = R.string.username),
@@ -79,13 +107,17 @@ fun RegisterScreen(
                             )
                         }
                     }
-                }
-            )
+                })
 
             SocialTextField(
                 text = registerUiState.passwordText,
                 onValueChange = { password ->
                     registerViewModel.onEvent(RegisterUiEvent.PasswordInputText(password))
+                    registerViewModel.onEvent(
+                        RegisterUiEvent.ValidatePassword(
+                            password = registerUiState.passwordText
+                        )
+                    )
                 },
                 hint = stringResource(id = R.string.enter_password),
                 label = stringResource(id = R.string.password),
@@ -107,7 +139,11 @@ fun RegisterScreen(
                             }
                         }
                         IconButton(onClick = {
-                            registerViewModel.onEvent(RegisterUiEvent.ToggleVisibilityClick(registerUiState.toggleVisibility))
+                            registerViewModel.onEvent(
+                                RegisterUiEvent.ToggleVisibilityClick(
+                                    registerUiState.toggleVisibility
+                                )
+                            )
                         }) {
                             Icon(
                                 imageVector = if (registerUiState.toggleVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
@@ -120,66 +156,81 @@ fun RegisterScreen(
                 isError = !registerUiState.validatePassword,
                 errorMessage = stringResource(id = R.string.validate_password)
             )
+
+            SocialTextField(
+                text = registerUiState.confirmPasswordText,
+                onValueChange = { confirmPassword ->
+                    registerViewModel.onEvent(
+                        RegisterUiEvent.ConfirmPasswordInputText(
+                            confirmPassword
+                        )
+                    )
+                    registerViewModel.onEvent(
+                        RegisterUiEvent.ValidateConfirmPassword(
+                            confirmPassword = registerUiState.confirmPasswordText
+                        )
+                    )
+                },
+                hint = stringResource(id = R.string.enter_confirmPassword),
+                label = stringResource(id = R.string.confirmPassword),
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.Password,
+                        contentDescription = stringResource(id = R.string.confirmPassword)
+                    )
+                },
+                keyboardType = KeyboardType.Password,
+                trailingIcon = {
+                    Row {
+                        if (registerUiState.confirmPasswordText.isNotEmpty()) {
+                            IconButton(onClick = { registerViewModel.onEvent(RegisterUiEvent.EmptyFieldConfirmPassword) }) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Cancel,
+                                    contentDescription = stringResource(R.string.empty_confirmPassword_field)
+                                )
+                            }
+                        }
+                        IconButton(onClick = {
+                            registerViewModel.onEvent(
+                                RegisterUiEvent.ToggleVisibilityClick(
+                                    registerUiState.toggleVisibility
+                                )
+                            )
+                        }) {
+                            Icon(
+                                imageVector = if (registerUiState.toggleVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                                contentDescription = ""
+                            )
+                        }
+                    }
+                },
+                visualTransformation = if (registerUiState.toggleVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+                isError = !registerUiState.validateConfirmPassword,
+                errorMessage = stringResource(id = R.string.validate_confirmPassword)
+            )
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
             Button(
                 onClick = {
-//                    registerViewModel.onEvent(
-//                        RegisterUiEvent.ValidateForm(
-//                            username = registerUiState.usernameText,
-//                            password = registerUiState.passwordText
-//                        )
-//                    )
-                }) {
-                Text(text = stringResource(id = R.string.take_me_in))
-            }
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
-            Text(
-                text = stringResource(id = R.string.or_continue_with),
-                fontWeight = FontWeight.SemiBold,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.outline
-            )
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
+//
+                },
+                enabled = if (
+                    registerUiState.emailText.isEmpty() ||
+                    registerUiState.usernameText.isEmpty() ||
+                    registerUiState.passwordText.isEmpty() ||
+                    registerUiState.confirmPasswordText.isEmpty()
+                ) false
+                else
+                    registerUiState.validateEmail &&
+                            registerUiState.validateUsername &&
+                            registerUiState.validatePassword &&
+                            registerUiState.validateConfirmPassword
+
+
             ) {
-                OutlinedButton(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(MaterialTheme.spacing.extraSmall)
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.google),
-                        contentDescription = stringResource(
-                            id = R.string.google_signIn
-                        ),
-                        modifier = Modifier.size(30.dp)
-                    )
-                    Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
-                    Text(
-                        text = stringResource(id = R.string.google_signIn),
-                    )
-                }
-                OutlinedButton(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(MaterialTheme.spacing.extraSmall)
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.facebook),
-                        contentDescription = stringResource(
-                            id = R.string.facebook_signIn
-                        ),
-                        modifier = Modifier.size(30.dp)
-                    )
-                    Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
-                    Text(
-                        text = stringResource(id = R.string.facebook_signIn),
-                    )
-                }
+                Text(text = stringResource(id = R.string.sign_me_up))
             }
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
+
         }
         Row(
             modifier = Modifier
@@ -187,10 +238,10 @@ fun RegisterScreen(
                 .align(Alignment.BottomCenter)
 
         ) {
-            Text(text = stringResource(id = R.string.new_here))
+            Text(text = stringResource(id = R.string.already_here))
             Text(
-                modifier = Modifier.clickable { navController.navigateUp()},
-                text = stringResource(id = R.string.apply),
+                modifier = Modifier.clickable { navController.navigateUp() },
+                text = stringResource(id = R.string.login_instead),
                 color = MaterialTheme.colorScheme.primary
             )
         }

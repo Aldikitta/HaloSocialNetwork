@@ -2,7 +2,10 @@ package com.aldikitta.hollahalo.presentation.auth.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Cancel
@@ -35,13 +38,16 @@ fun LoginScreen(
 ) {
     val loginUiState by loginViewModel.loginUiState.collectAsStateWithLifecycle()
 
+    val scrollState = rememberScrollState()
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = MaterialTheme.spacing.small),
+                .padding(horizontal = MaterialTheme.spacing.small)
+                .verticalScroll(scrollState),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

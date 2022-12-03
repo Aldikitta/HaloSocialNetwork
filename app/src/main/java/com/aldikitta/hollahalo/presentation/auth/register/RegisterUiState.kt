@@ -14,5 +14,5 @@ data class RegisterUiState(
     val validateEmail: Boolean = true,
     val validateUsername: Boolean = true,
     val validatePassword: Boolean = true,
-    val validateConfirmPassword: Boolean = true
-    )
+    val validateConfirmPassword: Boolean = true,
+)

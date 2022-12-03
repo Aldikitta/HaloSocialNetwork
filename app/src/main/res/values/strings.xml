@@ -23,4 +23,14 @@
     <string name="empty_password_field">Empty password field</string>
     <string name="welcome">Welcome :)</string>
     <string name="your_new_here">We connect people\nJoin now for free!</string>
+    <string name="enter_email">Enter email</string>
+    <string name="validate_email">Please enter valid email</string>
+    <string name="empty_email_field">Empty email field</string>
+    <string name="enter_confirmPassword">Re enter password</string>
+    <string name="confirmPassword">Confirm password</string>
+    <string name="empty_confirmPassword_field">Empty confirm password field</string>
+    <string name="sign_me_up">Sign me up</string>
+    <string name="already_here">Already here? Login inetead</string>
+    <string name="login_instead">" Login"</string>
+    <string name="validate_confirmPassword">Password not equal, enter the same one</string>
 </resources>

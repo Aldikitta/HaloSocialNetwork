@@ -10,6 +10,5 @@ data class LoginUiState(
     val emptyField: String = "",
 
     val validateUsername: Boolean = true,
-    val validatePassword: Boolean = true,
-
-    )
+    val validatePassword: Boolean = true
+)
