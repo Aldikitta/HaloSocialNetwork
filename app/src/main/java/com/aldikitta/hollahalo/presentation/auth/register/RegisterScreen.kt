@@ -24,22 +24,25 @@ import com.aldikitta.hollahalo.R
 import com.aldikitta.hollahalo.presentation.auth.composable.GreetingAuth
 import com.aldikitta.hollahalo.presentation.auth.composable.SocialTextField
 import com.aldikitta.hollahalo.presentation.ui.theme.spacing
+import com.aldikitta.hollahalo.presentation.util.Screen
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun RegisterScreen(
-    navController: NavController, registerViewModel: RegisterViewModel = hiltViewModel()
+    navController: NavController,
+    registerViewModel: RegisterViewModel = hiltViewModel()
 ) {
     val registerUiState by registerViewModel.registerUiState.collectAsStateWithLifecycle()
-    val scrollState = rememberScrollState()
-    Box(
-        modifier = Modifier.fillMaxSize(),
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = MaterialTheme.spacing.small)
-                .verticalScroll(scrollState),
+                .systemBarsPadding(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -47,7 +50,8 @@ fun RegisterScreen(
                 header = stringResource(id = R.string.welcome),
                 subHeader = stringResource(id = R.string.your_new_here),
             )
-            SocialTextField(text = registerUiState.emailText,
+            SocialTextField(
+                text = registerUiState.emailText,
                 onValueChange = { email ->
                     registerViewModel.onEvent(RegisterUiEvent.EmailInputText(email))
                     registerViewModel.onEvent(
@@ -229,21 +233,26 @@ fun RegisterScreen(
             ) {
                 Text(text = stringResource(id = R.string.sign_me_up))
             }
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
-
         }
         Row(
             modifier = Modifier
                 .padding(MaterialTheme.spacing.medium)
-                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .navigationBarsPadding(),
+            horizontalArrangement = Arrangement.Center
 
         ) {
             Text(text = stringResource(id = R.string.already_here))
             Text(
-                modifier = Modifier.clickable { navController.navigateUp() },
-                text = stringResource(id = R.string.login_instead),
+                modifier = Modifier.clickable {
+                    //                    navController.navigateUp()
+                    navController.navigate(route = Screen.MainFeedScreen.route)
+                },
+                text = stringResource(id = R.string.apply),
                 color = MaterialTheme.colorScheme.primary
             )
         }
     }
+
+
 }

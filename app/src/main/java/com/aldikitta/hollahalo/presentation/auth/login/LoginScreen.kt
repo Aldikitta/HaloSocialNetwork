@@ -1,11 +1,8 @@
 package com.aldikitta.hollahalo.presentation.auth.login
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Cancel
@@ -13,6 +10,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,16 +38,14 @@ fun LoginScreen(
 ) {
     val loginUiState by loginViewModel.loginUiState.collectAsStateWithLifecycle()
 
-    val scrollState = rememberScrollState()
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = MaterialTheme.spacing.small)
-                .verticalScroll(scrollState),
+            modifier = Modifier.systemBarsPadding(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -93,7 +91,7 @@ fun LoginScreen(
                 onValueChange = { password ->
                     loginViewModel.onEvent(
                         LoginUiEvent.PasswordInputText(password),
-                                      )
+                    )
                     loginViewModel.onEvent(
                         LoginUiEvent.ValidatePassword(
                             password = loginUiState.passwordText
@@ -120,7 +118,11 @@ fun LoginScreen(
                             }
                         }
                         IconButton(onClick = {
-                            loginViewModel.onEvent(LoginUiEvent.ToggleVisibilityClick(loginUiState.toggleVisibility))
+                            loginViewModel.onEvent(
+                                LoginUiEvent.ToggleVisibilityClick(
+                                    loginUiState.toggleVisibility
+                                )
+                            )
                         }) {
                             Icon(
                                 imageVector = if (loginUiState.toggleVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
@@ -194,13 +196,15 @@ fun LoginScreen(
         Row(
             modifier = Modifier
                 .padding(MaterialTheme.spacing.medium)
-                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .navigationBarsPadding(),
+            horizontalArrangement = Arrangement.Center
 
         ) {
             Text(text = stringResource(id = R.string.new_here))
             Text(
                 modifier = Modifier.clickable {
-                    navController.navigate(Screen.RegisterScreen.route){
+                    navController.navigate(Screen.RegisterScreen.route) {
 //                        popUpToId { inclusive = true }
                     }
                 },
@@ -209,4 +213,6 @@ fun LoginScreen(
             )
         }
     }
+
+
 }

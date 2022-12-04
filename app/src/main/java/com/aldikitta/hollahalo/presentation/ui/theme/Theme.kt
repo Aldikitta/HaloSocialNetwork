@@ -132,7 +132,7 @@ fun HollaHaloTheme(
             val activity  = view.context as Activity
 //            activity.window.statusBarColor = colorScheme.background.toArgb()
             WindowCompat.getInsetsController(activity.window, view).isAppearanceLightStatusBars = !darkTheme
-
+            WindowCompat.getInsetsController(activity.window, view).isAppearanceLightNavigationBars = !darkTheme
 
 //            (view.context as Activity).window.statusBarColor = colorScheme.primary.toArgb()
 //            ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = darkTheme
