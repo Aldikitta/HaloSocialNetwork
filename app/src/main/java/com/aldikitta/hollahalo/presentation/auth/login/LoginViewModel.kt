@@ -17,6 +17,7 @@ class LoginViewModel @Inject constructor(
 
     fun onEvent(loginUiEvent: LoginUiEvent) {
         when (loginUiEvent) {
+            //TODO check weather we need to use _loginUiState or loginUiState (probably use the private one)
             is LoginUiEvent.UsernameInputText -> {
                 _loginUiState.value = loginUiState.value.copy(
                     usernameText = loginUiEvent.username
