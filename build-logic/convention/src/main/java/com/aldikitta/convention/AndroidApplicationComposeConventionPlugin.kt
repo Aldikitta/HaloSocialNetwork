@@ -1,5 +1,3 @@
-package com.aldikitta.convention
-
 import com.aldikitta.convention.hollahalo.configureAndroidCompose
 import com.android.build.api.dsl.ApplicationExtension
 import org.gradle.api.Plugin
