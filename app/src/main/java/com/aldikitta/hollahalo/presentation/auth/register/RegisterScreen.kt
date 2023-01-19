@@ -17,7 +17,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.aldikitta.hollahalo.R
@@ -26,7 +25,6 @@ import com.aldikitta.hollahalo.presentation.auth.composable.SocialTextField
 import com.aldikitta.hollahalo.presentation.ui.theme.spacing
 import com.aldikitta.hollahalo.presentation.util.Screen
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun RegisterScreen(
     navController: NavController,
