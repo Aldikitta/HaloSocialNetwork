@@ -15,6 +15,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "HollaHalo"
 include ':app'
-include ':core'
-include ':core:data'
-include ':build-logic:convention'
+
