@@ -1,9 +1,9 @@
 pluginManagement {
-//    includeBuild("build-logic")
+    includeBuild("build-logic")
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
 }
 dependencyResolutionManagement {
@@ -14,7 +14,6 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "HollaHalo"
-include ':app'
-include ':core'
-include ':core:data'
-include ':build-logic:convention'
+include(":app")
+include(":core:data")
+include(":authentication")
