@@ -17,3 +17,7 @@ rootProject.name = "HollaHalo"
 include(":app")
 include(":core:data")
 include(":authentication")
+include(":authentication:sign_in")
+include(":authentication:login")
+include(":ui")
+include(":core:model")

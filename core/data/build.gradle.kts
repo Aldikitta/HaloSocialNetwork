@@ -1,11 +1,12 @@
-plugins {
-    id("aldikitta.android.library")
-}
-
-android {
-    namespace = "com.aldikitta.data"
-}
-
-dependencies {
-
-}
+//plugins {
+//    id("aldikitta.android.library")
+//    id("org.jetbrains.kotlin.android")
+//}
+//
+//android {
+//    namespace = "com.aldikitta.data"
+//}
+//
+//dependencies {
+//
+//}
