@@ -13,6 +13,8 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
+//this
 rootProject.name = "HollaHalo"
 include ':app'
 
