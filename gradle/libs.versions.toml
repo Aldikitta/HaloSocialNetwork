@@ -1,5 +1,6 @@
 [versions]
 android-gradle-plugin = "7.4.0"
+android-desugar-jdk-libs = "1.2.2"
 androidx-activity = "1.6.1"
 androidx-arch-core = "2.2.0-alpha01"
 androidx-collection = "1.1.0"
@@ -21,6 +22,7 @@ org-jetbrains-kotlin = "1.8.0"
 org-jetbrains-kotlinx = "1.8.0"
 
 [libraries]
+android-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "android-desugar-jdk-libs" }
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle-plugin" }
 androidx-activity = { module = "androidx.activity:activity", version.ref = "androidx-activity" }
 androidx-activity-activity-compose = "androidx.activity:activity-compose:1.7.0-alpha03"

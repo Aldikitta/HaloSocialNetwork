@@ -17,6 +17,3 @@ dependencyResolutionManagement {
 rootProject.name = "HollaHalo"
 include(":app")
 include(":core:data")
-include(":ui")
-
-

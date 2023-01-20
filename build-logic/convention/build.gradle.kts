@@ -17,23 +17,23 @@ dependencies {
 gradlePlugin {
     plugins {
         register("androidApplicationCompose") {
-            id = "nowinandroid.android.application.compose"
+            id = "aldikitta.android.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
         register("androidApplication") {
-            id = "nowinandroid.android.application"
+            id = "aldikitta.android.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
         register("androidLibraryCompose") {
-            id = "nowinandroid.android.library.compose"
+            id = "aldikitta.android.library.compose"
             implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
         register("androidLibrary") {
-            id = "nowinandroid.android.library"
+            id = "aldikitta.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
         register("androidHilt") {
-            id = "nowinandroid.android.hilt"
+            id = "aldikitta.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
         }
     }
