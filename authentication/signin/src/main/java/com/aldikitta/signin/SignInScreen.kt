@@ -25,11 +25,11 @@ import com.aldikitta.designsystem.components.SocialTextField
 import com.aldikitta.designsystem.theme.spacing
 
 @Composable
-fun LoginScreen(
+fun SignInScreen(
     navController: NavController,
     signInViewModel: SignInViewModel = hiltViewModel()
 ) {
-    val loginUiState by signInViewModel.loginUiState.collectAsStateWithLifecycle()
+    val signInUiState by signInViewModel.signInUiState.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
@@ -47,12 +47,12 @@ fun LoginScreen(
                 subHeader = stringResource(id = R.string.welcome_back),
             )
             SocialTextField(
-                text = loginUiState.usernameText,
+                text = signInUiState.usernameText,
                 onValueChange = { username ->
                     signInViewModel.onEvent(SignInUiEvent.UsernameInputText(username))
                     signInViewModel.onEvent(
                         SignInUiEvent.ValidateUsername(
-                            username = loginUiState.usernameText
+                            username = signInUiState.usernameText
                         )
                     )
                 },
@@ -65,10 +65,10 @@ fun LoginScreen(
                     )
                 },
                 keyboardType = KeyboardType.Email,
-                isError = !loginUiState.validateUsername,
+                isError = !signInUiState.validateUsername,
                 errorMessage = stringResource(id = R.string.validate_username),
                 trailingIcon = {
-                    if (loginUiState.usernameText.isNotEmpty()) {
+                    if (signInUiState.usernameText.isNotEmpty()) {
                         IconButton(onClick = { signInViewModel.onEvent(SignInUiEvent.EmptyFieldUsername) }) {
                             Icon(
                                 imageVector = Icons.Outlined.Cancel,
@@ -80,14 +80,14 @@ fun LoginScreen(
             )
 
             SocialTextField(
-                text = loginUiState.passwordText,
+                text = signInUiState.passwordText,
                 onValueChange = { password ->
                     signInViewModel.onEvent(
                         SignInUiEvent.PasswordInputText(password),
                     )
                     signInViewModel.onEvent(
                         SignInUiEvent.ValidatePassword(
-                            password = loginUiState.passwordText
+                            password = signInUiState.passwordText
                         )
                     )
                 },
@@ -102,7 +102,7 @@ fun LoginScreen(
                 keyboardType = KeyboardType.Password,
                 trailingIcon = {
                     Row {
-                        if (loginUiState.passwordText.isNotEmpty()) {
+                        if (signInUiState.passwordText.isNotEmpty()) {
                             IconButton(onClick = { signInViewModel.onEvent(SignInUiEvent.EmptyFieldPassword) }) {
                                 Icon(
                                     imageVector = Icons.Outlined.Cancel,
@@ -113,19 +113,19 @@ fun LoginScreen(
                         IconButton(onClick = {
                             signInViewModel.onEvent(
                                 SignInUiEvent.ToggleVisibilityClick(
-                                    loginUiState.toggleVisibility
+                                    signInUiState.toggleVisibility
                                 )
                             )
                         }) {
                             Icon(
-                                imageVector = if (loginUiState.toggleVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                                imageVector = if (signInUiState.toggleVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                                 contentDescription = ""
                             )
                         }
                     }
                 },
-                visualTransformation = if (loginUiState.toggleVisibility) VisualTransformation.None else PasswordVisualTransformation(),
-                isError = !loginUiState.validatePassword,
+                visualTransformation = if (signInUiState.toggleVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+                isError = !signInUiState.validatePassword,
                 errorMessage = stringResource(id = R.string.validate_password)
             )
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
@@ -133,7 +133,7 @@ fun LoginScreen(
                 onClick = {
 
                 },
-                enabled = if (loginUiState.usernameText.isEmpty() || loginUiState.passwordText.isEmpty()) false else loginUiState.validateUsername && loginUiState.validatePassword
+                enabled = if (signInUiState.usernameText.isEmpty() || signInUiState.passwordText.isEmpty()) false else signInUiState.validateUsername && signInUiState.validatePassword
             ) {
                 Text(text = stringResource(id = R.string.take_me_in))
             }
