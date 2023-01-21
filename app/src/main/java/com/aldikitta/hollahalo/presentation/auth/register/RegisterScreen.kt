@@ -22,7 +22,7 @@ import androidx.navigation.NavController
 import com.aldikitta.hollahalo.R
 import com.aldikitta.hollahalo.presentation.auth.composable.GreetingAuth
 import com.aldikitta.hollahalo.presentation.auth.composable.SocialTextField
-import com.aldikitta.hollahalo.presentation.ui.theme.spacing
+import com.example.designsystem.theme.spacing
 import com.aldikitta.hollahalo.presentation.util.Screen
 
 @Composable

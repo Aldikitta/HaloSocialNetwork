@@ -1,7 +1,5 @@
 package com.aldikitta.hollahalo.presentation.auth.register
 
-import com.aldikitta.hollahalo.presentation.auth.login.LoginUiEvent
-
 sealed class RegisterUiEvent {
     data class EmailInputText(val email: String) : RegisterUiEvent()
     data class UsernameInputText(val username: String) : RegisterUiEvent()

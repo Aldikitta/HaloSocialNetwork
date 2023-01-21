@@ -4,8 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.aldikitta.data"
-
+    namespace = "com.example.signup"
 }
 
 dependencies {

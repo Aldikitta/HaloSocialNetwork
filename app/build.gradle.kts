@@ -2,6 +2,7 @@ plugins {
     id("aldikitta.android.application")
     id("aldikitta.android.application.compose")
     id("aldikitta.android.hilt")
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
@@ -32,7 +33,7 @@ android {
 }
 
 dependencies {
-//
+    //
 //    def composeBom = platform ('androidx.compose:compose-bom:2022.10.00')
 //    implementation composeBom
 //            androidTestImplementation composeBom
