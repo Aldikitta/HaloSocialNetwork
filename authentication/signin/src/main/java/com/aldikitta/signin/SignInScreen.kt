@@ -23,6 +23,7 @@ import com.aldikitta.designsystem.R
 import com.aldikitta.designsystem.components.GreetingAuth
 import com.aldikitta.designsystem.components.SocialTextField
 import com.aldikitta.designsystem.theme.spacing
+import com.aldikitta.signup.navigation.navigateToSignUpScreen
 
 @Composable
 fun SignInScreen(
@@ -197,9 +198,10 @@ fun SignInScreen(
             Text(text = stringResource(id = R.string.new_here))
             Text(
                 modifier = Modifier.clickable {
-                    navController.navigate(Screen.RegisterScreen.route) {
-//                        popUpToId { inclusive = true }
-                    }
+                    navController.navigateToSignUpScreen()
+//                    navController.navigate(Screen.RegisterScreen.route) {
+////                        popUpToId { inclusive = true }
+//                    }
                 },
                 text = stringResource(id = R.string.apply),
                 color = MaterialTheme.colorScheme.primary

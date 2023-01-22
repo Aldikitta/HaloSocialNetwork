@@ -242,8 +242,9 @@ fun SignUpScreen(
             Text(text = stringResource(id = R.string.already_here))
             Text(
                 modifier = Modifier.clickable {
+                    navController.popBackStack()
                     //                    navController.navigateUp()
-                    navController.navigate(route = Screen.MainFeedScreen.route)
+//                    navController.navigate(route = Screen.MainFeedScreen.route)
                 },
                 text = stringResource(id = R.string.apply),
                 color = MaterialTheme.colorScheme.primary
