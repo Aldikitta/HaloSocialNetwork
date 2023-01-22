@@ -1,9 +1,9 @@
-package com.aldikitta.hollahalo.presentation.auth.register
+package com.aldikitta.signup
 
 import androidx.compose.runtime.Immutable
 
 @Immutable
-data class RegisterUiState(
+data class SignUpUiState(
     val emailText: String = "",
     val usernameText: String = "",
     val passwordText: String = "",

@@ -2,7 +2,6 @@ plugins {
     id("aldikitta.android.application")
     id("aldikitta.android.application.compose")
     id("aldikitta.android.hilt")
-    id("org.jetbrains.kotlin.android")
 }
 
 android {

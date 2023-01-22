@@ -1,4 +1,4 @@
-package com.aldikitta.hollahalo.presentation.auth.register
+package com.aldikitta.signup
 
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
@@ -8,88 +8,88 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(
+class SignUpViewModel @Inject constructor(
 
 ) : ViewModel() {
-    private val _registerUiState = MutableStateFlow(RegisterUiState())
-    val registerUiState = _registerUiState.asStateFlow()
+    private val _signUpUiState = MutableStateFlow(SignUpUiState())
+    val registerUiState = _signUpUiState.asStateFlow()
 
-    fun onEvent(registerUiEvent: RegisterUiEvent) {
-        when (registerUiEvent) {
-            is RegisterUiEvent.EmailInputText -> {
-                _registerUiState.value = registerUiState.value.copy(
-                    emailText = registerUiEvent.email
+    fun onEvent(signUpUiEvent: SignUpUiEvent) {
+        when (signUpUiEvent) {
+            is SignUpUiEvent.EmailInputText -> {
+                _signUpUiState.value = registerUiState.value.copy(
+                    emailText = signUpUiEvent.email
                 )
             }
-            is RegisterUiEvent.UsernameInputText -> {
-                _registerUiState.value = registerUiState.value.copy(
-                    usernameText = registerUiEvent.username
+            is SignUpUiEvent.UsernameInputText -> {
+                _signUpUiState.value = registerUiState.value.copy(
+                    usernameText = signUpUiEvent.username
                 )
             }
-            is RegisterUiEvent.PasswordInputText -> {
-                _registerUiState.value = registerUiState.value.copy(
-                    passwordText = registerUiEvent.password
+            is SignUpUiEvent.PasswordInputText -> {
+                _signUpUiState.value = registerUiState.value.copy(
+                    passwordText = signUpUiEvent.password
                 )
             }
-            is RegisterUiEvent.ConfirmPasswordInputText -> {
-                _registerUiState.value = registerUiState.value.copy(
-                    confirmPasswordText = registerUiEvent.confirmPassword
+            is SignUpUiEvent.ConfirmPasswordInputText -> {
+                _signUpUiState.value = registerUiState.value.copy(
+                    confirmPasswordText = signUpUiEvent.confirmPassword
                 )
             }
-            is RegisterUiEvent.EmptyFieldEmail -> {
-                _registerUiState.value = registerUiState.value.copy(
+            is SignUpUiEvent.EmptyFieldEmail -> {
+                _signUpUiState.value = registerUiState.value.copy(
                     emailText = registerUiState.value.emptyField
                 )
             }
-            is RegisterUiEvent.EmptyFieldUsername -> {
-                _registerUiState.value = registerUiState.value.copy(
+            is SignUpUiEvent.EmptyFieldUsername -> {
+                _signUpUiState.value = registerUiState.value.copy(
                     usernameText = registerUiState.value.emptyField
                 )
             }
-            is RegisterUiEvent.EmptyFieldPassword -> {
-                _registerUiState.value = registerUiState.value.copy(
+            is SignUpUiEvent.EmptyFieldPassword -> {
+                _signUpUiState.value = registerUiState.value.copy(
                     passwordText = registerUiState.value.emptyField
                 )
             }
-            is RegisterUiEvent.EmptyFieldConfirmPassword -> {
-                _registerUiState.value = registerUiState.value.copy(
+            is SignUpUiEvent.EmptyFieldConfirmPassword -> {
+                _signUpUiState.value = registerUiState.value.copy(
                     confirmPasswordText = registerUiState.value.emptyField
                 )
             }
-            is RegisterUiEvent.ToggleVisibilityClick -> {
-                _registerUiState.value = registerUiState.value.copy(
+            is SignUpUiEvent.ToggleVisibilityClick -> {
+                _signUpUiState.value = registerUiState.value.copy(
                     toggleVisibility = !registerUiState.value.toggleVisibility
                 )
             }
-            is RegisterUiEvent.ValidateEmail -> {
-                _registerUiState.value = registerUiState.value.copy(
+            is SignUpUiEvent.ValidateEmail -> {
+                _signUpUiState.value = registerUiState.value.copy(
                     validateEmail = Patterns.EMAIL_ADDRESS.matcher(registerUiState.value.emailText)
                         .matches(),
                 )
             }
-            is RegisterUiEvent.ValidateUsername -> {
+            is SignUpUiEvent.ValidateUsername -> {
                 val minUsernameLength = 3
-                _registerUiState.value = registerUiState.value.copy(
+                _signUpUiState.value = registerUiState.value.copy(
                     validateUsername = registerUiState.value.usernameText.isNotBlank() && registerUiState.value.usernameText.length >= minUsernameLength,
                 )
             }
-            is RegisterUiEvent.ValidatePassword -> {
+            is SignUpUiEvent.ValidatePassword -> {
                 val passwordRegex =
                     "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,}".toRegex()
-                _registerUiState.value = registerUiState.value.copy(
+                _signUpUiState.value = registerUiState.value.copy(
                     validatePassword = passwordRegex.matches(registerUiState.value.passwordText)
                 )
             }
-            is RegisterUiEvent.ValidateConfirmPassword -> {
-                _registerUiState.value = registerUiState.value.copy(
+            is SignUpUiEvent.ValidateConfirmPassword -> {
+                _signUpUiState.value = registerUiState.value.copy(
                     validateConfirmPassword = registerUiState.value.passwordText == registerUiState.value.confirmPasswordText
                 )
             }
 
-            is RegisterUiEvent.ValidateForm -> {
+            is SignUpUiEvent.ValidateForm -> {
                 val passwordRegex =
                     "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=]).{8,}".toRegex()
-                _registerUiState.value = registerUiState.value.copy(
+                _signUpUiState.value = registerUiState.value.copy(
                     validateEmail = Patterns.EMAIL_ADDRESS.matcher(registerUiState.value.emailText)
                         .matches(),
                     validateUsername = registerUiState.value.usernameText.isNotBlank(),

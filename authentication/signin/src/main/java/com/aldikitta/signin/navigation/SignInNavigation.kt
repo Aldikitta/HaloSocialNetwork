@@ -1,4 +1,4 @@
-package com.aldikitta.navigation
+package com.aldikitta.signin.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder

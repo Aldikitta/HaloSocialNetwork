@@ -1,4 +1,4 @@
-package com.aldikitta.hollahalo.presentation.auth.register
+package com.aldikitta.signup
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,18 +19,17 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.aldikitta.hollahalo.R
-import com.aldikitta.hollahalo.presentation.auth.composable.GreetingAuth
-import com.aldikitta.hollahalo.presentation.auth.composable.SocialTextField
-import com.example.designsystem.theme.spacing
-import com.aldikitta.hollahalo.presentation.util.Screen
+import com.aldikitta.designsystem.components.GreetingAuth
+import com.aldikitta.designsystem.components.SocialTextField
+import com.aldikitta.designsystem.R
+import com.aldikitta.designsystem.theme.spacing
 
 @Composable
-fun RegisterScreen(
+fun SignUpScreen(
     navController: NavController,
-    registerViewModel: RegisterViewModel = hiltViewModel()
+    signUpViewModel: SignUpViewModel = hiltViewModel()
 ) {
-    val registerUiState by registerViewModel.registerUiState.collectAsStateWithLifecycle()
+    val registerUiState by signUpViewModel.registerUiState.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier
@@ -51,9 +50,9 @@ fun RegisterScreen(
             SocialTextField(
                 text = registerUiState.emailText,
                 onValueChange = { email ->
-                    registerViewModel.onEvent(RegisterUiEvent.EmailInputText(email))
-                    registerViewModel.onEvent(
-                        RegisterUiEvent.ValidateEmail(
+                    signUpViewModel.onEvent(SignUpUiEvent.EmailInputText(email))
+                    signUpViewModel.onEvent(
+                        SignUpUiEvent.ValidateEmail(
                             email = registerUiState.emailText
                         )
                     )
@@ -71,7 +70,7 @@ fun RegisterScreen(
                 errorMessage = stringResource(id = R.string.validate_email),
                 trailingIcon = {
                     if (registerUiState.emailText.isNotEmpty()) {
-                        IconButton(onClick = { registerViewModel.onEvent(RegisterUiEvent.EmptyFieldEmail) }) {
+                        IconButton(onClick = { signUpViewModel.onEvent(SignUpUiEvent.EmptyFieldEmail) }) {
                             Icon(
                                 imageVector = Icons.Outlined.Cancel,
                                 contentDescription = stringResource(R.string.empty_email_field)
@@ -82,9 +81,9 @@ fun RegisterScreen(
 
             SocialTextField(text = registerUiState.usernameText,
                 onValueChange = { username ->
-                    registerViewModel.onEvent(RegisterUiEvent.UsernameInputText(username))
-                    registerViewModel.onEvent(
-                        RegisterUiEvent.ValidateUsername(
+                    signUpViewModel.onEvent(SignUpUiEvent.UsernameInputText(username))
+                    signUpViewModel.onEvent(
+                        SignUpUiEvent.ValidateUsername(
                             username = registerUiState.usernameText
                         )
                     )
@@ -102,7 +101,7 @@ fun RegisterScreen(
                 errorMessage = stringResource(id = R.string.validate_username),
                 trailingIcon = {
                     if (registerUiState.usernameText.isNotEmpty()) {
-                        IconButton(onClick = { registerViewModel.onEvent(RegisterUiEvent.EmptyFieldUsername) }) {
+                        IconButton(onClick = { signUpViewModel.onEvent(SignUpUiEvent.EmptyFieldUsername) }) {
                             Icon(
                                 imageVector = Icons.Outlined.Cancel,
                                 contentDescription = stringResource(R.string.empty_username_field)
@@ -114,9 +113,9 @@ fun RegisterScreen(
             SocialTextField(
                 text = registerUiState.passwordText,
                 onValueChange = { password ->
-                    registerViewModel.onEvent(RegisterUiEvent.PasswordInputText(password))
-                    registerViewModel.onEvent(
-                        RegisterUiEvent.ValidatePassword(
+                    signUpViewModel.onEvent(SignUpUiEvent.PasswordInputText(password))
+                    signUpViewModel.onEvent(
+                        SignUpUiEvent.ValidatePassword(
                             password = registerUiState.passwordText
                         )
                     )
@@ -133,7 +132,7 @@ fun RegisterScreen(
                 trailingIcon = {
                     Row {
                         if (registerUiState.passwordText.isNotEmpty()) {
-                            IconButton(onClick = { registerViewModel.onEvent(RegisterUiEvent.EmptyFieldPassword) }) {
+                            IconButton(onClick = { signUpViewModel.onEvent(SignUpUiEvent.EmptyFieldPassword) }) {
                                 Icon(
                                     imageVector = Icons.Outlined.Cancel,
                                     contentDescription = stringResource(R.string.empty_password_field)
@@ -141,8 +140,8 @@ fun RegisterScreen(
                             }
                         }
                         IconButton(onClick = {
-                            registerViewModel.onEvent(
-                                RegisterUiEvent.ToggleVisibilityClick(
+                            signUpViewModel.onEvent(
+                                SignUpUiEvent.ToggleVisibilityClick(
                                     registerUiState.toggleVisibility
                                 )
                             )
@@ -162,13 +161,13 @@ fun RegisterScreen(
             SocialTextField(
                 text = registerUiState.confirmPasswordText,
                 onValueChange = { confirmPassword ->
-                    registerViewModel.onEvent(
-                        RegisterUiEvent.ConfirmPasswordInputText(
+                    signUpViewModel.onEvent(
+                        SignUpUiEvent.ConfirmPasswordInputText(
                             confirmPassword
                         )
                     )
-                    registerViewModel.onEvent(
-                        RegisterUiEvent.ValidateConfirmPassword(
+                    signUpViewModel.onEvent(
+                        SignUpUiEvent.ValidateConfirmPassword(
                             confirmPassword = registerUiState.confirmPasswordText
                         )
                     )
@@ -185,7 +184,7 @@ fun RegisterScreen(
                 trailingIcon = {
                     Row {
                         if (registerUiState.confirmPasswordText.isNotEmpty()) {
-                            IconButton(onClick = { registerViewModel.onEvent(RegisterUiEvent.EmptyFieldConfirmPassword) }) {
+                            IconButton(onClick = { signUpViewModel.onEvent(SignUpUiEvent.EmptyFieldConfirmPassword) }) {
                                 Icon(
                                     imageVector = Icons.Outlined.Cancel,
                                     contentDescription = stringResource(R.string.empty_confirmPassword_field)
@@ -193,8 +192,8 @@ fun RegisterScreen(
                             }
                         }
                         IconButton(onClick = {
-                            registerViewModel.onEvent(
-                                RegisterUiEvent.ToggleVisibilityClick(
+                            signUpViewModel.onEvent(
+                                SignUpUiEvent.ToggleVisibilityClick(
                                     registerUiState.toggleVisibility
                                 )
                             )
@@ -251,6 +250,4 @@ fun RegisterScreen(
             )
         }
     }
-
-
 }

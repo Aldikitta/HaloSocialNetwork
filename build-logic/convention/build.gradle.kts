@@ -36,5 +36,9 @@ gradlePlugin {
             id = "aldikitta.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
         }
+        register("androidFeature") {
+            id = "aldikitta.android.feature"
+            implementationClass = "AndroidFeatureConventionPlugin"
+        }
     }
 }
