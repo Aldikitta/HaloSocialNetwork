@@ -1,4 +1,9 @@
 package com.aldikitta.hollahalo.ui
 
-class HollaHaloAppMain {
+import androidx.compose.runtime.Composable
+
+@Composable
+fun HollaHaloAppMain(
+
+) {
 }

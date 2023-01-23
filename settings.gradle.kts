@@ -16,7 +16,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "HollaHalo"
 include(":app")
-include(":core:data")
 include(":authentication:signin")
 include(":authentication:signup")
 include(":core:designsystem")
+include(":core:data")
