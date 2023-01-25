@@ -6,15 +6,20 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
 import com.aldikitta.data.util.NetworkMonitor
 import com.aldikitta.hollahalo.R
 import com.aldikitta.hollahalo.navigation.HollaHaloNavHost
+import com.aldikitta.hollahalo.navigation.TopLevelDestination
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class,
+@OptIn(
+    ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class,
     ExperimentalLayoutApi::class
 )
 @Composable
@@ -26,7 +31,7 @@ fun HollaHaloAppMain(
         networkMonitor = networkMonitor
     )
 ) {
-    val snackbarHostState = remember{
+    val snackbarHostState = remember {
         SnackbarHostState()
     }
 
@@ -48,8 +53,13 @@ fun HollaHaloAppMain(
             SnackbarHost(hostState = snackbarHostState)
         },
         bottomBar = {
-            if (appState.shouldShowBottomBar){
-
+            if (appState.shouldShowBottomBar) {
+                HollaHaloBottomBar(
+                    destinations = appState.topLevelDestinations,
+                    onNavigateToDestination = appState::navigateToTopLevelDestination,
+                    currentDestination = appState.currentDestination,
+                    modifier = Modifier.testTag("HollaHaloBottomBar")
+                )
             }
         }
     ) {
@@ -64,10 +74,84 @@ fun HollaHaloAppMain(
                     )
                 )
         ) {
-            if (appState.shouldShowNavRail){
-
+            if (appState.shouldShowNavRail) {
+                HollaHaloNavRail(
+                    destinations = appState.topLevelDestinations,
+                    onNavigateToDestination = appState::navigateToTopLevelDestination,
+                    currentDestination = appState.currentDestination,
+                    modifier = Modifier
+                        .testTag("HollaHaloNavRail")
+                        .safeDrawingPadding()
+                )
             }
             HollaHaloNavHost(navHostController = appState.navController)
         }
     }
 }
+
+@Composable
+private fun HollaHaloNavRail(
+    destinations: List<TopLevelDestination>,
+    onNavigateToDestination: (TopLevelDestination) -> Unit,
+    currentDestination: NavDestination?,
+    modifier: Modifier = Modifier
+) {
+    NavigationRail(
+        modifier = modifier
+    ) {
+        destinations.forEach {
+            val selected = currentDestination.isTopLevelDestinationInHierarchy(it)
+            NavigationRailItem(
+                selected = selected,
+                onClick = { onNavigateToDestination(it) },
+                icon = {
+                    val icon = if (selected) {
+                        it.selectedIcon
+                    } else {
+                        it.unselectedIcon
+                    }
+                    Icon(imageVector = icon, contentDescription = null)
+                },
+                label = {
+                    Text(text = stringResource(it.iconTextId))
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun HollaHaloBottomBar(
+    destinations: List<TopLevelDestination>,
+    onNavigateToDestination: (TopLevelDestination) -> Unit,
+    currentDestination: NavDestination?,
+    modifier: Modifier = Modifier
+) {
+    NavigationBar(
+        modifier = Modifier
+    ) {
+        destinations.forEach {
+            val selected = currentDestination.isTopLevelDestinationInHierarchy(it)
+            NavigationBarItem(
+                selected = selected,
+                onClick = { onNavigateToDestination(it) },
+                icon = {
+                    val icon = if (selected) {
+                        it.selectedIcon
+                    } else {
+                        it.unselectedIcon
+                    }
+                    Icon(imageVector = icon, contentDescription = null)
+                },
+                label = {
+                    Text(text = stringResource(it.iconTextId))
+                }
+            )
+        }
+    }
+}
+
+private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: TopLevelDestination) =
+    this?.hierarchy?.any {
+        it.route?.contains(destination.name, true) ?: false
+    } ?: false

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.aldikitta.signup"
+    namespace = "com.aldikitta.profile"
 }
 
 dependencies {

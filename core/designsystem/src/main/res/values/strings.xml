@@ -34,6 +34,6 @@
     <string name="already_here">Already here? Login inetead</string>
     <string name="login_instead">" Login"</string>
     <string name="validate_confirmPassword">Password not equal, enter the same one</string>
-    <string name="local">Local</string>
-    <string name="remote">Remote</string>
+    <string name="feed">Feed</string>
+    <string name="profile">profile</string>
 </resources>

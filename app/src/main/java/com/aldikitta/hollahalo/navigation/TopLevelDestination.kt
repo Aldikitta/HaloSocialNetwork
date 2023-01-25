@@ -3,6 +3,7 @@ package com.aldikitta.hollahalo.navigation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Article
 import androidx.compose.material.icons.filled.Inbox
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.aldikitta.designsystem.R
 
@@ -12,16 +13,16 @@ enum class TopLevelDestination(
     val iconTextId: Int,
     val titleTextId: Int
 ) {
-    LOCAL(
+    FEED(
         selectedIcon = Icons.Default.Article,
         unselectedIcon = Icons.Default.Article,
-        iconTextId = R.string.local,
-        titleTextId = R.string.local
+        iconTextId = R.string.feed,
+        titleTextId = R.string.feed
     ),
-    REMOTE(
-        selectedIcon = Icons.Default.Inbox,
-        unselectedIcon = Icons.Default.Inbox,
-        iconTextId = R.string.remote,
-        titleTextId = R.string.remote
+    PROFILE(
+        selectedIcon = Icons.Default.Person,
+        unselectedIcon = Icons.Default.Person,
+        iconTextId = R.string.profile,
+        titleTextId = R.string.profile
     ),
 }

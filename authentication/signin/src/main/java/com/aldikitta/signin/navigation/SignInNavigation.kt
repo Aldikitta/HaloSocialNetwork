@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.aldikitta.signin.SignInScreen
 
-private const val signInGraphRoutePattern = "signIn_screen_graph"
+const val signInGraphRoutePattern = "signIn_screen_graph"
 const val signInRoute = "signIn_route"
 
 fun NavController.navigateToSignInGraph(navOptions: NavOptions? = null) {
