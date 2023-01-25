@@ -5,12 +5,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.aldikitta.signin.navigation.signInGraph
 import com.aldikitta.signin.navigation.signInRoute
+import com.aldikitta.signup.navigation.signUpRoute
 import com.aldikitta.signup.navigation.signUpScreen
 
 @Composable
 fun HollaHaloNavHost(
     navHostController: NavHostController,
-    startDestination: String = signInRoute
+    startDestination: String = signUpRoute
 ) {
     NavHost(
         navController = navHostController,

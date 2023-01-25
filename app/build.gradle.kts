@@ -35,13 +35,16 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:data"))
     implementation(project(":core:designsystem"))
     implementation(project(":authentication:signin"))
     implementation(project(":authentication:signup"))
     implementation(libs.androidx.activity.activity.compose)
     implementation(libs.androidx.core.core.splashscreen)
+    implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material3.window)
     implementation(libs.androidx.compose.material.material.icons.extended)
     implementation(libs.androidx.navigation.navigation.compose)
 }

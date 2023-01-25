@@ -10,6 +10,5 @@ android {
 dependencies {
     implementation(libs.androidx.core.core.ktx)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.android)
-    implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.core)
     implementation(libs.javax.inject.javax.inject)
 }
