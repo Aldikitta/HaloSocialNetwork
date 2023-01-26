@@ -5,8 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.Comment
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Send
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import com.aldikitta.designsystem.theme.spacing
 
 @Composable
@@ -28,9 +29,9 @@ fun FeedScreen() {
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(MaterialTheme.spacing.small),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Image(
                 modifier = Modifier
@@ -40,38 +41,68 @@ fun FeedScreen() {
                 contentDescription = stringResource(id = R.string.profile_picture),
                 contentScale = ContentScale.Crop
             )
-            Text(text = "Ruby")
+            Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
+            Column {
+                Text(text = "Ruby", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+                Text(text = "The Cat", style = MaterialTheme.typography.titleMedium)
+            }
         }
-        Image(
-            modifier = Modifier
-                .padding(MaterialTheme.spacing.small)
-                .clip(RoundedCornerShape(MaterialTheme.spacing.large)),
-            painter = painterResource(id = R.drawable.cat),
-            contentDescription = stringResource(id = R.string.profile_picture)
-        )
-
         Row(
             modifier = Modifier
-                .padding(MaterialTheme.spacing.small)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(MaterialTheme.spacing.small),
+            verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row() {
+            Image(
+                modifier = Modifier
+                    .weight(1f)
+                    .clip(RoundedCornerShape(MaterialTheme.spacing.large)),
+                painter = painterResource(id = R.drawable.cat),
+                contentDescription = stringResource(id = R.string.profile_picture)
+            )
+            Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
+            Column() {
                 Icon(
-                    imageVector = Icons.Filled.Favorite,
+                    imageVector = Icons.Outlined.Favorite,
                     contentDescription = stringResource(id = R.string.like)
                 )
-                Spacer(modifier = Modifier.width(MaterialTheme.spacing.large))
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
                 Icon(
                     imageVector = Icons.Outlined.Comment,
                     contentDescription = stringResource(id = R.string.comment)
                 )
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
+                Icon(
+                    imageVector = Icons.Outlined.Send,
+                    contentDescription = stringResource(id = R.string.share)
+                )
             }
-            Icon(
-                imageVector = Icons.Outlined.Send,
-                contentDescription = stringResource(id = R.string.share)
-            )
         }
+
+
+//        Row(
+//            modifier = Modifier
+//                .padding(MaterialTheme.spacing.small)
+//                .fillMaxWidth(),
+//            horizontalArrangement = Arrangement.SpaceBetween
+//        ) {
+//            Row() {
+//                Icon(
+//                    imageVector = Icons.Filled.Favorite,
+//                    contentDescription = stringResource(id = R.string.like)
+//                )
+//                Spacer(modifier = Modifier.width(MaterialTheme.spacing.large))
+//                Icon(
+//                    imageVector = Icons.Outlined.Comment,
+//                    contentDescription = stringResource(id = R.string.comment)
+//                )
+//            }
+//            Icon(
+//                imageVector = Icons.Outlined.Send,
+//                contentDescription = stringResource(id = R.string.share)
+//            )
+//        }
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
