@@ -29,54 +29,81 @@ fun FeedScreen() {
 
 @Composable
 fun PostScreenVersion2() {
-    Box(
-        modifier = Modifier
-            .systemBarsPadding()
-            .padding(MaterialTheme.spacing.small)
-
+    Card(
+        modifier = Modifier.systemBarsPadding()
     ) {
-        Image(
-            modifier = Modifier
-                .shadow(
-                    elevation = 10.dp,
-                    spotColor = MaterialTheme.colorScheme.primary,
-                    shape = MaterialTheme.shapes.large
-                )
-                .clip(MaterialTheme.shapes.large),
-            painter = painterResource(id = R.drawable.post),
-            contentDescription = stringResource(id = R.string.profile_picture)
-        )
-        Row(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(MaterialTheme.spacing.medium)
+        Box(
+            modifier = Modifier.padding(MaterialTheme.spacing.small)
         ) {
             Image(
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .size(MaterialTheme.spacing.extraLarge),
-                painter = painterResource(id = R.drawable.cat),
-                contentDescription = stringResource(id = R.string.profile_picture),
-                contentScale = ContentScale.Crop
+                modifier = Modifier.clip(MaterialTheme.shapes.extraLarge),
+                painter = painterResource(id = R.drawable.post),
+                contentDescription = stringResource(id = R.string.profile_picture)
             )
-            Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
-            Column {
-                Text(
-                    text = "Ruby",
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold
+            Row(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(MaterialTheme.spacing.medium)
+            ) {
+                Image(
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .size(MaterialTheme.spacing.extraLarge),
+                    painter = painterResource(id = R.drawable.cat),
+                    contentDescription = stringResource(id = R.string.profile_picture),
+                    contentScale = ContentScale.Crop
                 )
-                Text(text = "The Cat", style = MaterialTheme.typography.titleMedium)
+                Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
+                Column {
+                    Text(
+                        text = "Ruby",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(text = "The Cat", style = MaterialTheme.typography.titleMedium)
+                }
             }
+//            Column(
+//                modifier = Modifier
+//                    .align(Alignment.BottomEnd)
+//                    .padding(MaterialTheme.spacing.medium),
+//                horizontalAlignment = Alignment.CenterHorizontally
+//            ) {
+//                Icon(
+//                    imageVector = Icons.Outlined.Favorite,
+//                    contentDescription = stringResource(id = R.string.like)
+//                )
+//                Text(
+//                    modifier = Modifier.padding(MaterialTheme.spacing.small),
+//                    text = "1290",
+//                    fontWeight = FontWeight.Medium,
+//                )
+//                Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
+//                Icon(
+//                    imageVector = Icons.Outlined.Comment,
+//                    contentDescription = stringResource(id = R.string.comment)
+//                )
+//                Text(
+//                    modifier = Modifier.padding(MaterialTheme.spacing.small),
+//                    text = "111",
+//                    fontWeight = FontWeight.Medium,
+//                )
+//                Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
+//                Icon(
+//                    imageVector = Icons.Outlined.Send,
+//                    contentDescription = stringResource(id = R.string.share)
+//                )
+//                Text(
+//                    modifier = Modifier.padding(MaterialTheme.spacing.small),
+//                    text = "100.0k",
+//                    fontWeight = FontWeight.Medium,
+//                )
+//            }
         }
-        Row() {
-
-        }
-        Column(
+        Row(
             modifier = Modifier
-                .align(Alignment.BottomEnd)
                 .padding(MaterialTheme.spacing.medium),
-            horizontalAlignment = Alignment.CenterHorizontally
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 imageVector = Icons.Outlined.Favorite,
@@ -87,7 +114,7 @@ fun PostScreenVersion2() {
                 text = "1290",
                 fontWeight = FontWeight.Medium,
             )
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
+            Spacer(modifier = Modifier.width(MaterialTheme.spacing.medium))
             Icon(
                 imageVector = Icons.Outlined.Comment,
                 contentDescription = stringResource(id = R.string.comment)
@@ -97,7 +124,7 @@ fun PostScreenVersion2() {
                 text = "111",
                 fontWeight = FontWeight.Medium,
             )
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.small))
+            Spacer(modifier = Modifier.width(MaterialTheme.spacing.medium))
             Icon(
                 imageVector = Icons.Outlined.Send,
                 contentDescription = stringResource(id = R.string.share)
@@ -108,11 +135,12 @@ fun PostScreenVersion2() {
                 fontWeight = FontWeight.Medium,
             )
         }
+        Text(
+            modifier = Modifier.padding(MaterialTheme.spacing.small),
+            text = "Night is where you see stars on the sky, light on the dark, it's so beautiful and all. Anyway this is comment"
+        )
     }
-    Text(
-        modifier = Modifier.padding(MaterialTheme.spacing.small),
-        text = "Night is where you see stars on the sky, light on the dark, it's so beautiful and all. Anyway this is comment"
-    )
+
 
 }
 
