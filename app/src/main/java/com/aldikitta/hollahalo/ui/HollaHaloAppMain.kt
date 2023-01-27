@@ -1,5 +1,6 @@
 package com.aldikitta.hollahalo.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -56,12 +57,14 @@ fun HollaHaloAppMain(
         },
         bottomBar = {
             if (appState.shouldShowBottomBar) {
-                HollaHaloBottomAppBar(
-                    destinations = appState.topLevelDestinations,
-                    onNavigateToDestination = appState::navigateToTopLevelDestination,
-                    currentDestination = appState.currentDestination,
-                    modifier = Modifier.testTag("HollaHaloBottomBar")
-                )
+                AnimatedVisibility(visible = appState.shouldShowBottomBar) {
+                    HollaHaloBottomAppBar(
+                        destinations = appState.topLevelDestinations,
+                        onNavigateToDestination = appState::navigateToTopLevelDestination,
+                        currentDestination = appState.currentDestination,
+                        modifier = Modifier.testTag("HollaHaloBottomBar")
+                    )
+                }
             }
         }
     ) {
@@ -77,14 +80,16 @@ fun HollaHaloAppMain(
                 )
         ) {
             if (appState.shouldShowNavRail) {
-                HollaHaloNavRail(
-                    destinations = appState.topLevelDestinations,
-                    onNavigateToDestination = appState::navigateToTopLevelDestination,
-                    currentDestination = appState.currentDestination,
-                    modifier = Modifier
-                        .testTag("HollaHaloNavRail")
-                        .safeDrawingPadding()
-                )
+                AnimatedVisibility(visible = appState.shouldShowNavRail) {
+                    HollaHaloNavRail(
+                        destinations = appState.topLevelDestinations,
+                        onNavigateToDestination = appState::navigateToTopLevelDestination,
+                        currentDestination = appState.currentDestination,
+                        modifier = Modifier
+                            .testTag("HollaHaloNavRail")
+                            .safeDrawingPadding()
+                    )
+                }
             }
             HollaHaloNavHost(navHostController = appState.navController)
         }
@@ -132,7 +137,16 @@ private fun HollaHaloNavRail(
     modifier: Modifier = Modifier
 ) {
     NavigationRail(
-        modifier = modifier
+        modifier = modifier,
+        header = {
+            FloatingActionButton(
+                onClick = { /* do something */ },
+                containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+            ) {
+                Icon(Icons.Filled.Add, "Localized description")
+            }
+        }
     ) {
         destinations.forEach {
             val selected = currentDestination.isTopLevelDestinationInHierarchy(it)

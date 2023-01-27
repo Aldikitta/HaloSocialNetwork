@@ -1,6 +1,7 @@
 package com.aldikitta.feed.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -25,7 +26,8 @@ import com.aldikitta.model.Post
 
 @Composable
 fun PostItem(
-    post: Post
+    post: Post,
+    onCommentClicked: () -> Unit
 ) {
     Card(
         modifier = Modifier.systemBarsPadding()
@@ -118,7 +120,9 @@ fun PostItem(
                 contentDescription = stringResource(id = R.string.comment)
             )
             Text(
-                modifier = Modifier.padding(MaterialTheme.spacing.small),
+                modifier = Modifier.padding(MaterialTheme.spacing.small).clickable {
+                    onCommentClicked()
+                },
                 text = post.commentCount.toString(),
                 fontWeight = FontWeight.Medium,
             )
