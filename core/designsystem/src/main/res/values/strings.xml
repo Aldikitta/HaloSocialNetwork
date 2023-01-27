@@ -35,5 +35,7 @@
     <string name="login_instead">" Login"</string>
     <string name="validate_confirmPassword">Password not equal, enter the same one</string>
     <string name="feed">Feed</string>
-    <string name="profile">profile</string>
+    <string name="profile">Profile</string>
+    <string name="activity">Activity</string>
+    <string name="chat">Chat</string>
 </resources>

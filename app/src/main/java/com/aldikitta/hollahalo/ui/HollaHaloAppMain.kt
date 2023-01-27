@@ -1,6 +1,8 @@
 package com.aldikitta.hollahalo.ui
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.*
@@ -54,7 +56,7 @@ fun HollaHaloAppMain(
         },
         bottomBar = {
             if (appState.shouldShowBottomBar) {
-                HollaHaloBottomBar(
+                HollaHaloBottomAppBar(
                     destinations = appState.topLevelDestinations,
                     onNavigateToDestination = appState::navigateToTopLevelDestination,
                     currentDestination = appState.currentDestination,
@@ -87,6 +89,39 @@ fun HollaHaloAppMain(
             HollaHaloNavHost(navHostController = appState.navController)
         }
     }
+}
+
+@Composable
+private fun HollaHaloBottomAppBar(
+    destinations: List<TopLevelDestination>,
+    onNavigateToDestination: (TopLevelDestination) -> Unit,
+    currentDestination: NavDestination?,
+    modifier: Modifier = Modifier
+) {
+    BottomAppBar(
+        actions = {
+            destinations.forEach {
+                val selected = currentDestination.isTopLevelDestinationInHierarchy(it)
+                IconButton(onClick = { onNavigateToDestination(it) }) {
+                    val icon = if (selected) {
+                        it.selectedIcon
+                    } else {
+                        it.unselectedIcon
+                    }
+                    Icon(imageVector = icon, contentDescription = null)
+                }
+            }
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { /* do something */ },
+                containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+            ) {
+                Icon(Icons.Filled.Add, "Localized description")
+            }
+        }
+    )
 }
 
 @Composable

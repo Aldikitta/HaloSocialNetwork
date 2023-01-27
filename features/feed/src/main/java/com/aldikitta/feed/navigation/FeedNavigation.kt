@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.aldikitta.feed.FeedScreen
+import com.aldikitta.model.Post
 
 const val feedRoute = "feed_route"
 
@@ -13,7 +14,7 @@ fun NavController.navigateToFeed(navOptions: NavOptions? = null){
 }
 
 fun NavGraphBuilder.feedScreen(
-    navController: NavController
+    navController: NavController,
 ){
     composable(route = feedRoute){
         FeedScreen()
