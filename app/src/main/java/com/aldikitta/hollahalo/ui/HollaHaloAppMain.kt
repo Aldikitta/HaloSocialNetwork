@@ -1,7 +1,9 @@
 package com.aldikitta.hollahalo.ui
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.*
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
@@ -23,7 +25,7 @@ import com.aldikitta.hollahalo.navigation.TopLevelDestination
 
 @OptIn(
     ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class,
-    ExperimentalLayoutApi::class
+    ExperimentalLayoutApi::class, ExperimentalAnimationApi::class
 )
 @Composable
 fun HollaHaloAppMain(
@@ -47,6 +49,11 @@ fun HollaHaloAppMain(
             duration = SnackbarDuration.Indefinite
         )
     }
+
+    val scrollState = rememberLazyListState()
+
+    val hideBottomBarWhenScrolling = !scrollState.isScrollInProgress
+
     Scaffold(
         modifier = Modifier.semantics {
             testTagsAsResourceId = true
@@ -57,7 +64,17 @@ fun HollaHaloAppMain(
         },
         bottomBar = {
             if (appState.shouldShowBottomBar) {
-                AnimatedVisibility(visible = appState.shouldShowBottomBar) {
+                AnimatedVisibility(
+                    visible = appState.shouldShowBottomBar && hideBottomBarWhenScrolling,
+                    enter = fadeIn(animationSpec = spring()) + scaleIn(
+                        animationSpec = spring(),
+                        initialScale = 0.3f
+                    ),
+                    exit = fadeOut(animationSpec = spring()) + scaleOut(
+                        animationSpec = spring(),
+                        targetScale = 0.3f
+                    )
+                ) {
                     HollaHaloBottomAppBar(
                         destinations = appState.topLevelDestinations,
                         onNavigateToDestination = appState::navigateToTopLevelDestination,
@@ -91,7 +108,7 @@ fun HollaHaloAppMain(
                     )
                 }
             }
-            HollaHaloNavHost(navHostController = appState.navController)
+            HollaHaloNavHost(navHostController = appState.navController, scrollState = scrollState)
         }
     }
 }

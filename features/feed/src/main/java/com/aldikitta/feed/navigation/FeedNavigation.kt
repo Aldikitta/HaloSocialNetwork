@@ -1,5 +1,7 @@
 package com.aldikitta.feed.navigation
 
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -15,8 +17,9 @@ fun NavController.navigateToFeed(navOptions: NavOptions? = null){
 
 fun NavGraphBuilder.feedScreen(
     navController: NavController,
+    scrollState: LazyListState
 ){
     composable(route = feedRoute){
-        FeedScreen()
+        FeedScreen(state = scrollState)
     }
 }
