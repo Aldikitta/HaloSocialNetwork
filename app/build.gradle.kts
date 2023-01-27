@@ -41,6 +41,8 @@ dependencies {
     implementation(project(":authentication:signup"))
     implementation(project(":features:feed"))
     implementation(project(":features:profile"))
+    implementation(project(":features:chat"))
+    implementation(project(":features:activity"))
     implementation(libs.androidx.activity.activity.compose)
     implementation(libs.androidx.core.core.splashscreen)
     implementation(libs.androidx.lifecycle.lifecycle.runtime.compose)

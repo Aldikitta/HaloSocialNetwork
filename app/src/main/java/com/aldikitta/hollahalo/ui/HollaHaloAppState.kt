@@ -14,6 +14,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import androidx.tracing.trace
+import com.aldikitta.activity.navigation.navigateToActivity
+import com.aldikitta.chat.navigation.navigateToChat
 import com.aldikitta.data.util.NetworkMonitor
 import com.aldikitta.feed.navigation.feedRoute
 import com.aldikitta.feed.navigation.navigateToFeed
@@ -89,6 +91,8 @@ class HollaHaloAppState(
 
             when (topLevelDestination){
                 TopLevelDestination.FEED -> navController.navigateToFeed (topLevelNavOptions)
+                TopLevelDestination.ACTIVITY -> navController.navigateToActivity (topLevelNavOptions)
+                TopLevelDestination.CHAT -> navController.navigateToChat (topLevelNavOptions)
                 TopLevelDestination.PROFILE -> navController.navigateToProfile(topLevelNavOptions)
             }
         }

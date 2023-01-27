@@ -3,6 +3,8 @@ package com.aldikitta.hollahalo.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.aldikitta.activity.navigation.activityScreen
+import com.aldikitta.chat.navigation.chatScreen
 import com.aldikitta.feed.navigation.feedRoute
 import com.aldikitta.feed.navigation.feedScreen
 import com.aldikitta.profile.navigation.profileScreen
@@ -31,5 +33,7 @@ fun HollaHaloNavHost(
         )
         feedScreen(navHostController)
         profileScreen(navHostController)
+        chatScreen(navHostController)
+        activityScreen(navHostController)
     }
 }
