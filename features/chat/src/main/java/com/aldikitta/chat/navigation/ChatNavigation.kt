@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.aldikitta.chat.ChatScreen
 
 const val chatRoute = "chat_route"
 
@@ -15,6 +16,6 @@ fun NavGraphBuilder.chatScreen(
     navController: NavController
 ){
     composable(route = chatRoute){
-
+        ChatScreen()
     }
 }

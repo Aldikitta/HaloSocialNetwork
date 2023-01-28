@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.aldikitta.profile.ProfileScreen
 
 const val profileRoute = "profile_route"
 
@@ -15,6 +16,6 @@ fun NavGraphBuilder.profileScreen(
     navController: NavController
 ){
     composable(route = profileRoute){
-
+        ProfileScreen()
     }
 }

@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.aldikitta.activity.ActivityScreen
 
 const val activityRoute = "activity_route"
 
@@ -15,6 +16,6 @@ fun NavGraphBuilder.activityScreen(
     navController: NavController
 ){
     composable(route = activityRoute){
-
+        ActivityScreen()
     }
 }

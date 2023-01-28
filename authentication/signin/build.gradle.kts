@@ -11,4 +11,5 @@ android {
 
 dependencies {
     implementation(project(":authentication:signup"))
+    implementation(project(":features:feed"))
 }

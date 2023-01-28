@@ -27,6 +27,7 @@ import com.aldikitta.designsystem.components.GreetingAuth
 import com.aldikitta.designsystem.components.SocialTextField
 import com.aldikitta.designsystem.theme.HollaHaloTheme
 import com.aldikitta.designsystem.theme.spacing
+import com.aldikitta.feed.navigation.navigateToFeed
 import com.aldikitta.signup.navigation.navigateToSignUpScreen
 
 @Composable
@@ -136,7 +137,7 @@ fun SignInScreen(
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
             Button(
                 onClick = {
-
+                    navController.navigateToFeed()
                 },
                 enabled = if (signInUiState.usernameText.isEmpty() || signInUiState.passwordText.isEmpty()) false else signInUiState.validateUsername && signInUiState.validatePassword
             ) {

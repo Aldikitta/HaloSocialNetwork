@@ -63,26 +63,30 @@ fun HollaHaloAppMain(
             SnackbarHost(hostState = snackbarHostState)
         },
         bottomBar = {
-            if (appState.shouldShowBottomBar) {
-                AnimatedVisibility(
-                    visible = appState.shouldShowBottomBar && hideBottomBarWhenScrolling,
-                    enter = fadeIn(animationSpec = spring()) + scaleIn(
-                        animationSpec = spring(),
-                        initialScale = 0.3f
-                    ),
-                    exit = fadeOut(animationSpec = spring()) + scaleOut(
-                        animationSpec = spring(),
-                        targetScale = 0.3f
-                    )
-                ) {
-                    HollaHaloBottomAppBar(
-                        destinations = appState.topLevelDestinations,
-                        onNavigateToDestination = appState::navigateToTopLevelDestination,
-                        currentDestination = appState.currentDestination,
-                        modifier = Modifier.testTag("HollaHaloBottomBar")
-                    )
+            val destination = appState.currentTopLevelDestination
+            if (destination != null){
+                if (appState.shouldShowBottomBar) {
+                    AnimatedVisibility(
+                        visible = appState.shouldShowBottomBar && hideBottomBarWhenScrolling,
+                        enter = fadeIn(animationSpec = spring()) + scaleIn(
+                            animationSpec = spring(),
+                            initialScale = 0.3f
+                        ),
+                        exit = fadeOut(animationSpec = spring()) + scaleOut(
+                            animationSpec = spring(),
+                            targetScale = 0.3f
+                        )
+                    ) {
+                        HollaHaloBottomAppBar(
+                            destinations = appState.topLevelDestinations,
+                            onNavigateToDestination = appState::navigateToTopLevelDestination,
+                            currentDestination = appState.currentDestination,
+                            modifier = Modifier.testTag("HollaHaloBottomBar")
+                        )
+                    }
                 }
             }
+
         }
     ) {
         Row(

@@ -15,7 +15,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import androidx.tracing.trace
+import com.aldikitta.activity.navigation.activityRoute
 import com.aldikitta.activity.navigation.navigateToActivity
+import com.aldikitta.chat.navigation.chatRoute
 import com.aldikitta.chat.navigation.navigateToChat
 import com.aldikitta.data.util.NetworkMonitor
 import com.aldikitta.feed.navigation.feedRoute
@@ -51,11 +53,13 @@ class HollaHaloAppState(
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
     val currentTopLevelDestination: TopLevelDestination?
-    @Composable get() = when (currentDestination?.route){
-        feedRoute -> TopLevelDestination.FEED
-        profileRoute -> TopLevelDestination.PROFILE
-        else -> null
-    }
+        @Composable get() = when (currentDestination?.route) {
+            feedRoute -> TopLevelDestination.FEED
+            activityRoute -> TopLevelDestination.ACTIVITY
+            chatRoute -> TopLevelDestination.CHAT
+            profileRoute -> TopLevelDestination.PROFILE
+            else -> null
+        }
 
     val shouldShowBottomBar: Boolean
         get() = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
@@ -74,9 +78,10 @@ class HollaHaloAppState(
 
     val topLevelDestinations: List<TopLevelDestination> = TopLevelDestination.values().asList()
 
-    fun navigateToTopLevelDestination(topLevelDestination: TopLevelDestination){
-        trace("Navigation: ${topLevelDestination.name}"){
-            val topLevelNavOptions = navOptions{
+
+    fun navigateToTopLevelDestination(topLevelDestination: TopLevelDestination) {
+        trace("Navigation: ${topLevelDestination.name}") {
+            val topLevelNavOptions = navOptions {
                 // Pop up to the start destination of the graph to
                 // avoid building up a large stack of destinations
                 // on the back stack as users select items
@@ -90,10 +95,10 @@ class HollaHaloAppState(
                 restoreState = true
             }
 
-            when (topLevelDestination){
-                TopLevelDestination.FEED -> navController.navigateToFeed (topLevelNavOptions)
-                TopLevelDestination.ACTIVITY -> navController.navigateToActivity (topLevelNavOptions)
-                TopLevelDestination.CHAT -> navController.navigateToChat (topLevelNavOptions)
+            when (topLevelDestination) {
+                TopLevelDestination.FEED -> navController.navigateToFeed(topLevelNavOptions)
+                TopLevelDestination.ACTIVITY -> navController.navigateToActivity(topLevelNavOptions)
+                TopLevelDestination.CHAT -> navController.navigateToChat(topLevelNavOptions)
                 TopLevelDestination.PROFILE -> navController.navigateToProfile(topLevelNavOptions)
             }
         }
