@@ -22,9 +22,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.aldikitta.designsystem.theme.spacing
 import com.aldikitta.feed.components.PostItem
 import com.aldikitta.model.Post
@@ -66,13 +69,16 @@ fun FeedScreen(
                         .padding(MaterialTheme.spacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Image(
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data("https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=843&q=80")
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = stringResource(id = R.string.profile_picture),
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .clip(CircleShape)
                             .size(MaterialTheme.spacing.large),
-                        painter = painterResource(id = R.drawable.cat),
-                        contentDescription = stringResource(id = R.string.profile_picture),
-                        contentScale = ContentScale.Crop
                     )
                     Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
                     TextField(
@@ -97,8 +103,8 @@ fun FeedScreen(
                 PostItem(
                     post = Post(
                         username = "Ruby",
-                        imageUrl = "",
-                        profilePictureUrl = "",
+                        profilePictureUrl = "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=843&q=80",
+                        imageUrl = "https://images.unsplash.com/photo-1674902096909-07a37724e4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
                         description = "Night is where you see stars on the sky, light on the dark, it's so beautiful and all. Anyway this is comment",
                         likeCount = 123,
                         commentCount = 144
@@ -112,8 +118,8 @@ fun FeedScreen(
                 PostItem(
                     post = Post(
                         username = "Ruby",
-                        imageUrl = "",
-                        profilePictureUrl = "",
+                        profilePictureUrl = "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=843&q=80",
+                        imageUrl = "https://images.unsplash.com/photo-1674902096909-07a37724e4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
                         description = "Night is where you see stars on the sky, light on the dark, it's so beautiful and all. Anyway this is comment",
                         likeCount = 123,
                         commentCount = 144
@@ -127,8 +133,23 @@ fun FeedScreen(
                 PostItem(
                     post = Post(
                         username = "Ruby",
-                        imageUrl = "",
-                        profilePictureUrl = "",
+                        profilePictureUrl = "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=843&q=80",
+                        imageUrl = "https://images.unsplash.com/photo-1674902096909-07a37724e4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
+                        description = "Night is where you see stars on the sky, light on the dark, it's so beautiful and all. Anyway this is comment",
+                        likeCount = 123,
+                        commentCount = 144
+                    ),
+                    onCommentClicked = {
+                        coroutineScope.launch {
+                            sheetState.show()
+                        }
+                    }
+                )
+                PostItem(
+                    post = Post(
+                        username = "Ruby",
+                        profilePictureUrl = "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=843&q=80",
+                        imageUrl = "https://images.unsplash.com/photo-1674902096909-07a37724e4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
                         description = "Night is where you see stars on the sky, light on the dark, it's so beautiful and all. Anyway this is comment",
                         likeCount = 123,
                         commentCount = 144

@@ -11,10 +11,19 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -22,6 +31,7 @@ import com.aldikitta.data.util.NetworkMonitor
 import com.aldikitta.hollahalo.R
 import com.aldikitta.hollahalo.navigation.HollaHaloNavHost
 import com.aldikitta.hollahalo.navigation.TopLevelDestination
+import kotlin.math.roundToInt
 
 @OptIn(
     ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class,
@@ -55,19 +65,22 @@ fun HollaHaloAppMain(
     val hideBottomBarWhenScrolling = !scrollState.isScrollInProgress
 
     Scaffold(
-        modifier = Modifier.semantics {
-            testTagsAsResourceId = true
-        },
+        modifier = Modifier
+            .semantics {
+                testTagsAsResourceId = true
+            },
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
         },
         bottomBar = {
             val destination = appState.currentTopLevelDestination
-            if (destination != null){
+            if (destination != null) {
                 if (appState.shouldShowBottomBar) {
                     AnimatedVisibility(
                         visible = appState.shouldShowBottomBar && hideBottomBarWhenScrolling,
+//                        enter = slideInVertically(),
+//                        exit = slideOutVertically(),
                         enter = fadeIn(animationSpec = spring()) + scaleIn(
                             animationSpec = spring(),
                             initialScale = 0.3f
@@ -81,7 +94,7 @@ fun HollaHaloAppMain(
                             destinations = appState.topLevelDestinations,
                             onNavigateToDestination = appState::navigateToTopLevelDestination,
                             currentDestination = appState.currentDestination,
-                            modifier = Modifier.testTag("HollaHaloBottomBar")
+                            modifier = Modifier.testTag("HollaHaloBottomBar"),
                         )
                     }
                 }
@@ -93,12 +106,12 @@ fun HollaHaloAppMain(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
-                .consumeWindowInsets(it)
-                .windowInsetsPadding(
-                    WindowInsets.safeDrawing.only(
-                        WindowInsetsSides.Horizontal
-                    )
-                )
+//                .consumeWindowInsets(it)
+//                .windowInsetsPadding(
+//                    WindowInsets.safeDrawing.only(
+//                        WindowInsetsSides.Horizontal
+//                    )
+//                )
         ) {
             if (appState.shouldShowNavRail) {
                 AnimatedVisibility(visible = appState.shouldShowNavRail) {
@@ -122,7 +135,7 @@ private fun HollaHaloBottomAppBar(
     destinations: List<TopLevelDestination>,
     onNavigateToDestination: (TopLevelDestination) -> Unit,
     currentDestination: NavDestination?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     BottomAppBar(
         actions = {

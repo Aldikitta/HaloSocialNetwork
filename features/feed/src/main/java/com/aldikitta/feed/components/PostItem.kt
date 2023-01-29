@@ -17,9 +17,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.aldikitta.designsystem.theme.spacing
 import com.aldikitta.feed.R
 import com.aldikitta.model.Post
@@ -35,24 +38,45 @@ fun PostItem(
         Box(
             modifier = Modifier.padding(MaterialTheme.spacing.small)
         ) {
-            Image(
-                modifier = Modifier.clip(MaterialTheme.shapes.extraLarge),
-                painter = painterResource(id = R.drawable.post),
-                contentDescription = stringResource(id = R.string.profile_picture)
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(post.imageUrl)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = stringResource(id = R.string.profile_picture),
+                modifier = Modifier.clip(MaterialTheme.shapes.extraLarge).fillMaxWidth(),
+                contentScale = ContentScale.Crop,
             )
+//            Image(
+//                modifier = Modifier.clip(MaterialTheme.shapes.extraLarge),
+//                painter = painterResource(id = R.drawable.post),
+//                contentDescription = stringResource(id = R.string.profile_picture)
+//            )
             Row(
                 modifier = Modifier
                     .align(Alignment.TopStart)
                     .padding(MaterialTheme.spacing.medium)
             ) {
-                Image(
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(post.profilePictureUrl)
+                        .data("https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=843&q=80")
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = stringResource(id = R.string.profile_picture),
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .clip(CircleShape)
                         .size(MaterialTheme.spacing.extraLarge),
-                    painter = painterResource(id = R.drawable.cat),
-                    contentDescription = stringResource(id = R.string.profile_picture),
-                    contentScale = ContentScale.Crop
                 )
+//                Image(
+//                    modifier = Modifier
+//                        .clip(CircleShape)
+//                        .size(MaterialTheme.spacing.extraLarge),
+//                    painter = painterResource(id = R.drawable.cat),
+//                    contentDescription = stringResource(id = R.string.profile_picture),
+//                    contentScale = ContentScale.Crop
+//                )
                 Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
                 Column {
                     Text(
@@ -120,9 +144,11 @@ fun PostItem(
                 contentDescription = stringResource(id = R.string.comment)
             )
             Text(
-                modifier = Modifier.padding(MaterialTheme.spacing.small).clickable {
-                    onCommentClicked()
-                },
+                modifier = Modifier
+                    .padding(MaterialTheme.spacing.small)
+                    .clickable {
+                        onCommentClicked()
+                    },
                 text = post.commentCount.toString(),
                 fontWeight = FontWeight.Medium,
             )
