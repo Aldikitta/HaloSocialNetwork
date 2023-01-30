@@ -1,34 +1,32 @@
 package com.aldikitta.feed
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material.*
 import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.aldikitta.designsystem.theme.spacing
+import com.aldikitta.feed.components.CommentItem
 import com.aldikitta.feed.components.PostItem
 import com.aldikitta.model.Post
 import kotlinx.coroutines.launch
@@ -37,24 +35,25 @@ import kotlinx.coroutines.launch
 @Composable
 fun FeedScreen(
     post: Post? = null,
-    state: LazyListState
+    state: LazyListState,
+    onCommentClick: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
-//        confirmStateChange = {
-//            it != ModalBottomSheetValue.HalfExpanded
-//        },
+        confirmStateChange = {
+            it != ModalBottomSheetValue.HalfExpanded
+        },
         skipHalfExpanded = true
     )
-
-    var text by rememberSaveable { mutableStateOf("") }
 
     BackHandler(sheetState.isVisible) {
         coroutineScope.launch {
             sheetState.hide()
         }
     }
+
+    var text by rememberSaveable { mutableStateOf("") }
 
     ModalBottomSheetLayout(
         modifier = Modifier.fillMaxSize(),
@@ -63,10 +62,27 @@ fun FeedScreen(
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         sheetContent = {
             Column(
+                modifier = Modifier.systemBarsPadding(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Divider(
+                    modifier = Modifier.width(MaterialTheme.spacing.extraLarge).padding(top = MaterialTheme.spacing.medium),
+                    thickness = MaterialTheme.spacing.extraSmall
+                )
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
+                LazyColumn(state = rememberLazyListState()) {
+                    item {
+                        CommentItem()
+                        CommentItem()
+                        CommentItem()
+                        CommentItem()
+                    }
+
+                }
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
+                Divider()
                 Row(
-                    modifier = Modifier
-                        .padding(MaterialTheme.spacing.medium),
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AsyncImage(
@@ -84,7 +100,7 @@ fun FeedScreen(
                     TextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = text, onValueChange = { text = it },
-                        label = {
+                        placeholder = {
                             Text(text = "Add Comment")
                         },
                         colors = TextFieldDefaults.textFieldColors(
@@ -92,13 +108,15 @@ fun FeedScreen(
                             focusedIndicatorColor = Color.Transparent,
                             unfocusedIndicatorColor = Color.Transparent,
                             disabledIndicatorColor = Color.Transparent
-                        )
+                        ),
+                        shape = MaterialTheme.shapes.extraLarge
                     )
                 }
+
             }
         }
     ) {
-        LazyColumn(state = state){
+        LazyColumn(state = state) {
             item {
                 PostItem(
                     post = Post(
@@ -110,9 +128,8 @@ fun FeedScreen(
                         commentCount = 144
                     ),
                     onCommentClicked = {
-                        coroutineScope.launch {
-                            sheetState.show()
-                        }
+                        onCommentClick()
+
                     }
                 )
                 PostItem(

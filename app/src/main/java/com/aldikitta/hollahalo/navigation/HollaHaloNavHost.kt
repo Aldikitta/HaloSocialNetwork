@@ -1,6 +1,7 @@
 package com.aldikitta.hollahalo.navigation
 
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -17,7 +18,8 @@ import com.aldikitta.signup.navigation.signUpScreen
 fun HollaHaloNavHost(
     navHostController: NavHostController,
     startDestination: String = feedRoute,
-    scrollState: LazyListState
+    scrollState: LazyListState,
+    onCommentClick: () -> Unit
 ) {
     NavHost(
         navController = navHostController,
@@ -31,7 +33,11 @@ fun HollaHaloNavHost(
                 )
             }
         )
-        feedScreen(navHostController, scrollState = scrollState)
+        feedScreen(
+            navHostController,
+            scrollState = scrollState,
+            onCommentClick = onCommentClick
+        )
         profileScreen(navHostController)
         chatScreen(navHostController)
         activityScreen(navHostController)

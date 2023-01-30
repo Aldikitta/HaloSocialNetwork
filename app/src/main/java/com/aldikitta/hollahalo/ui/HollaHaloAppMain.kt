@@ -1,41 +1,40 @@
 package com.aldikitta.hollahalo.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.*
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
-import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.aldikitta.data.util.NetworkMonitor
+import com.aldikitta.feed.components.CommentItem
 import com.aldikitta.hollahalo.R
 import com.aldikitta.hollahalo.navigation.HollaHaloNavHost
 import com.aldikitta.hollahalo.navigation.TopLevelDestination
-import kotlin.math.roundToInt
+import kotlinx.coroutines.launch
 
 @OptIn(
     ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class,
-    ExperimentalLayoutApi::class, ExperimentalAnimationApi::class
+    ExperimentalLayoutApi::class, ExperimentalAnimationApi::class, ExperimentalMaterialApi::class
 )
 @Composable
 fun HollaHaloAppMain(
@@ -49,6 +48,8 @@ fun HollaHaloAppMain(
     val snackbarHostState = remember {
         SnackbarHostState()
     }
+
+    val coroutineScope = rememberCoroutineScope()
 
     val isOffline by appState.isOffline.collectAsStateWithLifecycle()
 
@@ -64,70 +65,111 @@ fun HollaHaloAppMain(
 
     val hideBottomBarWhenScrolling = !scrollState.isScrollInProgress
 
-    Scaffold(
-        modifier = Modifier
-            .semantics {
-                testTagsAsResourceId = true
-            },
-        contentWindowInsets = WindowInsets(0, 0, 0, 0),
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
+    val sheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        confirmStateChange = {
+            it != ModalBottomSheetValue.HalfExpanded
         },
-        bottomBar = {
-            val destination = appState.currentTopLevelDestination
-            if (destination != null) {
-                if (appState.shouldShowBottomBar) {
-                    AnimatedVisibility(
-                        visible = appState.shouldShowBottomBar && hideBottomBarWhenScrolling,
-//                        enter = slideInVertically(),
-//                        exit = slideOutVertically(),
-                        enter = fadeIn(animationSpec = spring()) + scaleIn(
-                            animationSpec = spring(),
-                            initialScale = 0.3f
-                        ),
-                        exit = fadeOut(animationSpec = spring()) + scaleOut(
-                            animationSpec = spring(),
-                            targetScale = 0.3f
-                        )
-                    ) {
-                        HollaHaloBottomAppBar(
-                            destinations = appState.topLevelDestinations,
-                            onNavigateToDestination = appState::navigateToTopLevelDestination,
-                            currentDestination = appState.currentDestination,
-                            modifier = Modifier.testTag("HollaHaloBottomBar"),
-                        )
+        skipHalfExpanded = true
+    )
+
+    BackHandler(sheetState.isVisible) {
+        coroutineScope.launch {
+            sheetState.hide()
+        }
+    }
+
+    ModalBottomSheetLayout(
+        modifier = Modifier.fillMaxSize(),
+        sheetBackgroundColor = MaterialTheme.colorScheme.surface,
+        sheetState = sheetState,
+        sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        sheetContent = {
+            if (appState.shouldShowBottomSheet) {
+                when (appState.currentTopLevelDestination) {
+                    TopLevelDestination.FEED -> {
+                        CommentItem()
                     }
+                    else -> {}
                 }
             }
-
         }
     ) {
-        Row(
+        Scaffold(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(it)
+                .semantics {
+                    testTagsAsResourceId = true
+                },
+            contentWindowInsets = WindowInsets(0, 0, 0, 0),
+            snackbarHost = {
+                SnackbarHost(hostState = snackbarHostState)
+            },
+            bottomBar = {
+                val destination = appState.currentTopLevelDestination
+                if (destination != null) {
+                    if (appState.shouldShowBottomBar) {
+                        AnimatedVisibility(
+                            visible = appState.shouldShowBottomBar && hideBottomBarWhenScrolling,
+//                        enter = slideInVertically(),
+//                        exit = slideOutVertically(),
+                            enter = fadeIn(animationSpec = spring()) + scaleIn(
+                                animationSpec = spring(),
+                                initialScale = 0.3f
+                            ),
+                            exit = fadeOut(animationSpec = spring()) + scaleOut(
+                                animationSpec = spring(),
+                                targetScale = 0.3f
+                            )
+                        ) {
+                            HollaHaloBottomAppBar(
+                                destinations = appState.topLevelDestinations,
+                                onNavigateToDestination = appState::navigateToTopLevelDestination,
+                                currentDestination = appState.currentDestination,
+                                modifier = Modifier.testTag("HollaHaloBottomBar"),
+                            )
+                        }
+                    }
+                }
+
+            }
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(it)
 //                .consumeWindowInsets(it)
 //                .windowInsetsPadding(
 //                    WindowInsets.safeDrawing.only(
 //                        WindowInsetsSides.Horizontal
 //                    )
 //                )
-        ) {
-            if (appState.shouldShowNavRail) {
-                AnimatedVisibility(visible = appState.shouldShowNavRail) {
-                    HollaHaloNavRail(
-                        destinations = appState.topLevelDestinations,
-                        onNavigateToDestination = appState::navigateToTopLevelDestination,
-                        currentDestination = appState.currentDestination,
-                        modifier = Modifier
-                            .testTag("HollaHaloNavRail")
-                            .safeDrawingPadding()
-                    )
+            ) {
+                if (appState.shouldShowNavRail) {
+                    AnimatedVisibility(visible = appState.shouldShowNavRail) {
+                        HollaHaloNavRail(
+                            destinations = appState.topLevelDestinations,
+                            onNavigateToDestination = appState::navigateToTopLevelDestination,
+                            currentDestination = appState.currentDestination,
+                            modifier = Modifier
+                                .testTag("HollaHaloNavRail")
+                                .safeDrawingPadding()
+                        )
+                    }
                 }
+                HollaHaloNavHost(
+                    navHostController = appState.navController,
+                    scrollState = scrollState,
+                    onCommentClick = {
+                        appState.setShowBottomSheet(true)
+                        coroutineScope.launch {
+                            sheetState.show()
+                        }
+                    }
+                )
             }
-            HollaHaloNavHost(navHostController = appState.navController, scrollState = scrollState)
         }
     }
+
 }
 
 @Composable
