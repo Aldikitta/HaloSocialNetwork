@@ -31,7 +31,6 @@ fun CommentItem() {
     verticalArrangement = Arrangement.Top,
     horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Column() {
             Row(
                 modifier = Modifier.fillMaxWidth(),

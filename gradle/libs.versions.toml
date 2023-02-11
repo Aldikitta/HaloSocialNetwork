@@ -91,6 +91,7 @@ androidx-navigation-navigation-compose = "androidx.navigation:navigation-compose
 androidx-navigation-navigation-runtime = { module = "androidx.navigation:navigation-runtime", version.ref = "androidx-navigation" }
 androidx-navigation-navigation-runtime-ktx = { module = "androidx.navigation:navigation-runtime-ktx", version.ref = "androidx-navigation" }
 androidx-profileinstaller = "androidx.profileinstaller:profileinstaller:1.2.1"
+androidx-palette = "androidx.palette:palette-ktx:1.0.0"
 androidx-savedstate = { module = "androidx.savedstate:savedstate", version.ref = "androidx-savedstate" }
 androidx-savedstate-savedstate-ktx = { module = "androidx.savedstate:savedstate-ktx", version.ref = "androidx-savedstate" }
 androidx-startup-startup-runtime = "androidx.startup:startup-runtime:1.1.1"
@@ -152,7 +153,7 @@ org-jetbrains-kotlinx-kotlinx-gradle-plugin = { module = "org.jetbrains.kotlin:k
 org-robolectric = "org.robolectric:robolectric:4.9.2"
 
 [plugins]
-com-android-application = "com.android.application:7.4.0"
+com-android-application = "com.android.application:7.4.1"
 com-android-library = "com.android.library:7.4.0"
 com-github-ben-manes-versions = "com.github.ben-manes.versions:0.44.0"
 com-google-dagger-hilt-android = "com.google.dagger.hilt.android:2.44.2"

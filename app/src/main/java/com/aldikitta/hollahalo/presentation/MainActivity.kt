@@ -18,6 +18,7 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var networkMonitor: NetworkMonitor
+
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,18 +26,11 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         setContent {
             HollaHaloTheme {
-                // A surface container using the 'background' color from the theme
                 HollaHaloAppMain(
                     networkMonitor = networkMonitor, windowSizeClass = calculateWindowSizeClass(
                         activity = this
                     )
                 )
-//                Surface(
-//                    modifier = Modifier.fillMaxSize(),
-//                    color = MaterialTheme.colorScheme.background
-//                ) {
-//
-//                }
             }
         }
     }

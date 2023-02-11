@@ -1,6 +1,5 @@
 package com.aldikitta.hollahalo.ui
 
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -58,9 +57,6 @@ class HollaHaloAppState(
             else -> null
         }
 
-    var shouldShowBottomSheet by mutableStateOf(false)
-        private set
-
     val shouldShowBottomBar: Boolean
         get() = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
                 windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
@@ -77,7 +73,6 @@ class HollaHaloAppState(
         )
 
     val topLevelDestinations: List<TopLevelDestination> = TopLevelDestination.values().asList()
-
 
     fun navigateToTopLevelDestination(topLevelDestination: TopLevelDestination) {
         trace("Navigation: ${topLevelDestination.name}") {
@@ -102,9 +97,5 @@ class HollaHaloAppState(
                 TopLevelDestination.PROFILE -> navController.navigateToProfile(topLevelNavOptions)
             }
         }
-    }
-
-    fun setShowBottomSheet(shouldShow: Boolean) {
-        shouldShowBottomSheet = shouldShow
     }
 }

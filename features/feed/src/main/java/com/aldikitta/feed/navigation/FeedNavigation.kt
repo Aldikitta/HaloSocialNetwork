@@ -18,9 +18,8 @@ fun NavController.navigateToFeed(navOptions: NavOptions? = null){
 fun NavGraphBuilder.feedScreen(
     navController: NavController,
     scrollState: LazyListState,
-    onCommentClick: () -> Unit
 ){
     composable(route = feedRoute){
-        FeedScreen(state = scrollState, onCommentClick = onCommentClick)
+        FeedScreen(state = scrollState)
     }
 }

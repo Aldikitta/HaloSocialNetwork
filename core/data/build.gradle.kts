@@ -8,6 +8,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:model"))
     implementation(libs.androidx.core.core.ktx)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.android)
     implementation(libs.javax.inject.javax.inject)

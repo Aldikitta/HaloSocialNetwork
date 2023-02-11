@@ -9,5 +9,5 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.palette)
 }

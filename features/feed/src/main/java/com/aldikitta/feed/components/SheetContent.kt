@@ -77,6 +77,5 @@ fun SheetContent() {
                 shape = MaterialTheme.shapes.extraLarge
             )
         }
-
     }
 }

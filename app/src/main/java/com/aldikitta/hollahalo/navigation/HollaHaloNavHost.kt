@@ -19,7 +19,6 @@ fun HollaHaloNavHost(
     navHostController: NavHostController,
     startDestination: String = feedRoute,
     scrollState: LazyListState,
-    onCommentClick: () -> Unit
 ) {
     NavHost(
         navController = navHostController,
@@ -36,7 +35,6 @@ fun HollaHaloNavHost(
         feedScreen(
             navHostController,
             scrollState = scrollState,
-            onCommentClick = onCommentClick
         )
         profileScreen(navHostController)
         chatScreen(navHostController)
