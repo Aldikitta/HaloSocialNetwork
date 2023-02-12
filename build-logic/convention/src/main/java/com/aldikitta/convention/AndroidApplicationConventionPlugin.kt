@@ -16,6 +16,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig.targetSdk = 33
+//                defaultConfig.targetSdkPreview = "UpsideDownCake"
                 // TODO This is Flavor
 //                configureFlavors(this)
             }

@@ -1,5 +1,7 @@
 package com.aldikitta.signup
 
+import com.aldikitta.data.util.UiText
+
 sealed class SignUpUiEvent {
     data class EmailInputText(val email: String) : SignUpUiEvent()
     data class UsernameInputText(val username: String) : SignUpUiEvent()
@@ -20,8 +22,9 @@ sealed class SignUpUiEvent {
         val password: String,
         val confirmPassword: String
     ) : SignUpUiEvent()
+    object SignUp : SignUpUiEvent()
+}
 
-//    data class ShowSnackbar(val message: String): RegisterUiEvent()
-//    object ClickRegister: RegisterUiEvent()
-
+sealed class SignUpEvent{
+    data class ShowErrorMessage(val uiText: UiText): SignUpEvent()
 }

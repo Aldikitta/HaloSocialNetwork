@@ -17,7 +17,7 @@ import com.aldikitta.signup.navigation.signUpScreen
 @Composable
 fun HollaHaloNavHost(
     navHostController: NavHostController,
-    startDestination: String = feedRoute,
+    startDestination: String = signInGraphRoutePattern,
     scrollState: LazyListState,
 ) {
     NavHost(

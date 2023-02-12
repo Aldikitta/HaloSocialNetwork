@@ -8,10 +8,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -19,18 +19,65 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.aldikitta.data.util.asString
 import com.aldikitta.designsystem.components.GreetingAuth
 import com.aldikitta.designsystem.components.SocialTextField
 import com.aldikitta.designsystem.R
 import com.aldikitta.designsystem.theme.spacing
+import com.aldikitta.signup.component.AlertDialogFailedSignUp
+import com.aldikitta.signup.component.Error
+import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(
     navController: NavController,
-    signUpViewModel: SignUpViewModel = hiltViewModel()
+    signUpViewModel: SignUpViewModel = hiltViewModel(),
 ) {
-    val registerUiState by signUpViewModel.registerUiState.collectAsStateWithLifecycle()
+    val signUpState by signUpViewModel.signUpUiState.collectAsStateWithLifecycle()
+    val uiState by signUpViewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
+    val openDialog = remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        when (uiState) {
+            is UIState.Error -> {
+                openDialog.value = true
+            }
+            else -> {
+                openDialog.value = false
+            }
+        }
+    }
+    val errorMessage = remember{ mutableStateOf("")}
+    LaunchedEffect(Unit){
+        signUpViewModel.eventFlow.collectLatest {
+            when (it){
+                is SignUpEvent.ShowErrorMessage ->{
+                    errorMessage.value = it.uiText.asString(context)
+                }
+            }
+        }
+    }
+
+    when (uiState) {
+        is UIState.Initial -> Unit
+        is UIState.Loading -> CircularProgressIndicator()
+        is UIState.Success -> Error(text = "Success")
+        is UIState.Error -> {
+            if (!openDialog.value) {
+                AlertDialogFailedSignUp(
+                    onDismissRequest = {
+                        openDialog.value = true
+                    },
+                    onConfirmButton = {
+                        openDialog.value = true
+                    },
+                    errorMessage = errorMessage.value
+                )
+            }
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -48,12 +95,12 @@ fun SignUpScreen(
                 subHeader = stringResource(id = R.string.your_new_here),
             )
             SocialTextField(
-                text = registerUiState.emailText,
+                text = signUpState.emailText,
                 onValueChange = { email ->
                     signUpViewModel.onEvent(SignUpUiEvent.EmailInputText(email))
                     signUpViewModel.onEvent(
                         SignUpUiEvent.ValidateEmail(
-                            email = registerUiState.emailText
+                            email = signUpState.emailText
                         )
                     )
                 },
@@ -66,10 +113,10 @@ fun SignUpScreen(
                     )
                 },
                 keyboardType = KeyboardType.Email,
-                isError = !registerUiState.validateEmail,
+                isError = !signUpState.validateEmail,
                 errorMessage = stringResource(id = R.string.validate_email),
                 trailingIcon = {
-                    if (registerUiState.emailText.isNotEmpty()) {
+                    if (signUpState.emailText.isNotEmpty()) {
                         IconButton(onClick = { signUpViewModel.onEvent(SignUpUiEvent.EmptyFieldEmail) }) {
                             Icon(
                                 imageVector = Icons.Outlined.Cancel,
@@ -79,12 +126,12 @@ fun SignUpScreen(
                     }
                 })
 
-            SocialTextField(text = registerUiState.usernameText,
+            SocialTextField(text = signUpState.usernameText,
                 onValueChange = { username ->
                     signUpViewModel.onEvent(SignUpUiEvent.UsernameInputText(username))
                     signUpViewModel.onEvent(
                         SignUpUiEvent.ValidateUsername(
-                            username = registerUiState.usernameText
+                            username = signUpState.usernameText
                         )
                     )
                 },
@@ -97,10 +144,10 @@ fun SignUpScreen(
                     )
                 },
                 keyboardType = KeyboardType.Email,
-                isError = !registerUiState.validateUsername,
+                isError = !signUpState.validateUsername,
                 errorMessage = stringResource(id = R.string.validate_username),
                 trailingIcon = {
-                    if (registerUiState.usernameText.isNotEmpty()) {
+                    if (signUpState.usernameText.isNotEmpty()) {
                         IconButton(onClick = { signUpViewModel.onEvent(SignUpUiEvent.EmptyFieldUsername) }) {
                             Icon(
                                 imageVector = Icons.Outlined.Cancel,
@@ -111,12 +158,12 @@ fun SignUpScreen(
                 })
 
             SocialTextField(
-                text = registerUiState.passwordText,
+                text = signUpState.passwordText,
                 onValueChange = { password ->
                     signUpViewModel.onEvent(SignUpUiEvent.PasswordInputText(password))
                     signUpViewModel.onEvent(
                         SignUpUiEvent.ValidatePassword(
-                            password = registerUiState.passwordText
+                            password = signUpState.passwordText
                         )
                     )
                 },
@@ -131,7 +178,7 @@ fun SignUpScreen(
                 keyboardType = KeyboardType.Password,
                 trailingIcon = {
                     Row {
-                        if (registerUiState.passwordText.isNotEmpty()) {
+                        if (signUpState.passwordText.isNotEmpty()) {
                             IconButton(onClick = { signUpViewModel.onEvent(SignUpUiEvent.EmptyFieldPassword) }) {
                                 Icon(
                                     imageVector = Icons.Outlined.Cancel,
@@ -142,24 +189,24 @@ fun SignUpScreen(
                         IconButton(onClick = {
                             signUpViewModel.onEvent(
                                 SignUpUiEvent.ToggleVisibilityClick(
-                                    registerUiState.toggleVisibility
+                                    signUpState.toggleVisibility
                                 )
                             )
                         }) {
                             Icon(
-                                imageVector = if (registerUiState.toggleVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                                imageVector = if (signUpState.toggleVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                                 contentDescription = ""
                             )
                         }
                     }
                 },
-                visualTransformation = if (registerUiState.toggleVisibility) VisualTransformation.None else PasswordVisualTransformation(),
-                isError = !registerUiState.validatePassword,
+                visualTransformation = if (signUpState.toggleVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+                isError = !signUpState.validatePassword,
                 errorMessage = stringResource(id = R.string.validate_password)
             )
 
             SocialTextField(
-                text = registerUiState.confirmPasswordText,
+                text = signUpState.confirmPasswordText,
                 onValueChange = { confirmPassword ->
                     signUpViewModel.onEvent(
                         SignUpUiEvent.ConfirmPasswordInputText(
@@ -168,7 +215,7 @@ fun SignUpScreen(
                     )
                     signUpViewModel.onEvent(
                         SignUpUiEvent.ValidateConfirmPassword(
-                            confirmPassword = registerUiState.confirmPasswordText
+                            confirmPassword = signUpState.confirmPasswordText
                         )
                     )
                 },
@@ -183,7 +230,7 @@ fun SignUpScreen(
                 keyboardType = KeyboardType.Password,
                 trailingIcon = {
                     Row {
-                        if (registerUiState.confirmPasswordText.isNotEmpty()) {
+                        if (signUpState.confirmPasswordText.isNotEmpty()) {
                             IconButton(onClick = { signUpViewModel.onEvent(SignUpUiEvent.EmptyFieldConfirmPassword) }) {
                                 Icon(
                                     imageVector = Icons.Outlined.Cancel,
@@ -194,37 +241,37 @@ fun SignUpScreen(
                         IconButton(onClick = {
                             signUpViewModel.onEvent(
                                 SignUpUiEvent.ToggleVisibilityClick(
-                                    registerUiState.toggleVisibility
+                                    signUpState.toggleVisibility
                                 )
                             )
                         }) {
                             Icon(
-                                imageVector = if (registerUiState.toggleVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                                imageVector = if (signUpState.toggleVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                                 contentDescription = ""
                             )
                         }
                     }
                 },
-                visualTransformation = if (registerUiState.toggleVisibility) VisualTransformation.None else PasswordVisualTransformation(),
-                isError = !registerUiState.validateConfirmPassword,
+                visualTransformation = if (signUpState.toggleVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+                isError = !signUpState.validateConfirmPassword,
                 errorMessage = stringResource(id = R.string.validate_confirmPassword)
             )
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
             Button(
                 onClick = {
-//
+                    signUpViewModel.onEvent(SignUpUiEvent.SignUp)
                 },
                 enabled = if (
-                    registerUiState.emailText.isEmpty() ||
-                    registerUiState.usernameText.isEmpty() ||
-                    registerUiState.passwordText.isEmpty() ||
-                    registerUiState.confirmPasswordText.isEmpty()
+                    signUpState.emailText.isEmpty() ||
+                    signUpState.usernameText.isEmpty() ||
+                    signUpState.passwordText.isEmpty() ||
+                    signUpState.confirmPasswordText.isEmpty()
                 ) false
                 else
-                    registerUiState.validateEmail &&
-                            registerUiState.validateUsername &&
-                            registerUiState.validatePassword &&
-                            registerUiState.validateConfirmPassword
+                    signUpState.validateEmail &&
+                            signUpState.validateUsername &&
+                            signUpState.validatePassword &&
+                            signUpState.validateConfirmPassword
 
 
             ) {

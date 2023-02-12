@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="successfully_signup">Successfully registered an account, You can login now</string>
+</resources>

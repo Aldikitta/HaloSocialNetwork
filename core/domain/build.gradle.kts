@@ -1,20 +1,18 @@
 plugins {
     id("aldikitta.android.library")
     id("aldikitta.android.hilt")
-    id("kotlinx-serialization")
 }
 
 android {
-    namespace = "com.aldikitta.data"
+    namespace = "com.aldikitta.domain"
 }
 
 dependencies {
     implementation(project(":core:model"))
+    implementation(project(":core:data"))
     implementation(libs.androidx.core.core.ktx)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.android)
     implementation(libs.javax.inject.javax.inject)
-    implementation(libs.androidx.compose.runtime)
-    implementation(libs.androidx.compose.ui)
 
     //Ktor-Client
     implementation(libs.io.ktor.ktor.client.android)

@@ -2,6 +2,8 @@ plugins {
     id("aldikitta.android.application")
     id("aldikitta.android.application.compose")
     id("aldikitta.android.hilt")
+    id("kotlinx-serialization")
+
 }
 
 android {
@@ -52,4 +54,6 @@ dependencies {
     implementation(libs.androidx.compose.material.material.icons.extended)
     implementation(libs.androidx.navigation.navigation.compose)
     implementation(libs.androidx.tracing)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.ui.tooling.preview)
 }

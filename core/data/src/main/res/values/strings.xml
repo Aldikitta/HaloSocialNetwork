@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_unknown">Unknown error</string>
+    <string name="error_couldnt_reach_server">Oops, Couldn\'t reach server, check your internet connection</string>
+    <string name="oops_something_went_wrong">Oops, Something went wrong</string>
+    <string name="oops_client_error">The request cannot be completed. You may be doing something wrong</string>
+    <string name="oops_server_error">We are having trouble processing your valid request</string>
+    <string name="oops_redirect_error">You are required to take further action to fulfill this request</string>
+</resources>
