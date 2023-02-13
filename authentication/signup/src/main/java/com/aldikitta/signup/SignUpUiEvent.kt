@@ -26,5 +26,5 @@ sealed class SignUpUiEvent {
 }
 
 sealed class SignUpEvent{
-    data class ShowErrorMessage(val uiText: UiText): SignUpEvent()
+    data class ShowMessage(val uiText: UiText): SignUpEvent()
 }

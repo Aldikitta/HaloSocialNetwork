@@ -1,6 +1,8 @@
 package com.aldikitta.signup
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -10,8 +12,11 @@ import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -25,10 +30,9 @@ import com.aldikitta.designsystem.components.SocialTextField
 import com.aldikitta.designsystem.R
 import com.aldikitta.designsystem.theme.spacing
 import com.aldikitta.signup.component.AlertDialogFailedSignUp
-import com.aldikitta.signup.component.Error
+import com.aldikitta.signup.component.AlertDialogSuccessSignUp
 import kotlinx.coroutines.flow.collectLatest
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(
     navController: NavController,
@@ -37,24 +41,28 @@ fun SignUpScreen(
     val signUpState by signUpViewModel.signUpUiState.collectAsStateWithLifecycle()
     val uiState by signUpViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val interactionSource = remember { MutableInteractionSource() }
+    val pressed by interactionSource.collectIsPressedAsState()
 
-    val openDialog = remember { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
+    val openDialog = remember { mutableStateOf(true) }
+    val message = remember { mutableStateOf("") }
+
+    LaunchedEffect(pressed) {
         when (uiState) {
             is UIState.Error -> {
                 openDialog.value = true
             }
+            is UIState.Success -> {
+                openDialog.value = true
+            }
             else -> {
-                openDialog.value = false
+                openDialog.value = true
             }
         }
-    }
-    val errorMessage = remember{ mutableStateOf("")}
-    LaunchedEffect(Unit){
         signUpViewModel.eventFlow.collectLatest {
-            when (it){
-                is SignUpEvent.ShowErrorMessage ->{
-                    errorMessage.value = it.uiText.asString(context)
+            when (it) {
+                is SignUpEvent.ShowMessage -> {
+                    message.value = it.uiText.asString(context)
                 }
             }
         }
@@ -63,17 +71,30 @@ fun SignUpScreen(
     when (uiState) {
         is UIState.Initial -> Unit
         is UIState.Loading -> CircularProgressIndicator()
-        is UIState.Success -> Error(text = "Success")
-        is UIState.Error -> {
-            if (!openDialog.value) {
-                AlertDialogFailedSignUp(
+        is UIState.Success -> {
+            if (openDialog.value) {
+                AlertDialogSuccessSignUp(
                     onDismissRequest = {
-                        openDialog.value = true
+                        openDialog.value = false
                     },
                     onConfirmButton = {
-                        openDialog.value = true
+                        openDialog.value = false
+                        navController.popBackStack()
                     },
-                    errorMessage = errorMessage.value
+                    message = message.value
+                )
+            }
+        }
+        is UIState.Error -> {
+            if (openDialog.value) {
+                AlertDialogFailedSignUp(
+                    onDismissRequest = {
+                        openDialog.value = false
+                    },
+                    onConfirmButton = {
+                        openDialog.value = false
+                    },
+                    errorMessage = message.value
                 )
             }
         }
@@ -260,7 +281,9 @@ fun SignUpScreen(
             Button(
                 onClick = {
                     signUpViewModel.onEvent(SignUpUiEvent.SignUp)
+                    openDialog.value = true
                 },
+                interactionSource = interactionSource,
                 enabled = if (
                     signUpState.emailText.isEmpty() ||
                     signUpState.usernameText.isEmpty() ||
@@ -275,7 +298,14 @@ fun SignUpScreen(
 
 
             ) {
-                Text(text = stringResource(id = R.string.sign_me_up))
+                if (signUpState.isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(CenterVertically)
+                    )
+                } else {
+                    Text(text = stringResource(id = R.string.sign_me_up))
+                }
+
             }
         }
         Row(

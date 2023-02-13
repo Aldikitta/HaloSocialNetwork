@@ -118,33 +118,11 @@ class SignUpViewModel @Inject constructor(
     }
 
     private fun signUp() {
-        viewModelScope.launch {
-            authRepository.signUp(
-                signUpRequest = SignUpRequest(
-                    email = signUpUiState.value.emailText,
-                    username = signUpUiState.value.usernameText,
-                    password = signUpUiState.value.passwordText
-                )
-            ).let {
-                when (it) {
-                    is Resource.Success -> {
-                        _uiState.value = UIState.Success
-                        _onRegister.emit(Unit)
-                        _signUpUiState.value = _signUpUiState.value.copy(
-                            emailText = ""
-                        )
-                    }
-                    is Resource.Loading -> _uiState.value = UIState.Loading
-                    is Resource.Error -> {
-                        _eventFlow.emit(
-                            SignUpEvent.ShowErrorMessage(uiText = it.uiText ?: UiText.unknownError())
-                        )
-                        _uiState.value = UIState.Error(error = it.exception.toString())
-                    }
-                }
-            }
-
-//            val signUpResult = authRepository.signUp(
+//        viewModelScope.launch {
+//            _signUpUiState.value = _signUpUiState.value.copy(
+//                isLoading = true
+//            )
+//            authRepository.signUp(
 //                signUpRequest = SignUpRequest(
 //                    email = signUpUiState.value.emailText,
 //                    username = signUpUiState.value.usernameText,
@@ -153,16 +131,72 @@ class SignUpViewModel @Inject constructor(
 //            ).let {
 //                when (it) {
 //                    is Resource.Success -> {
+//                        _eventFlow.emit(
+//                            SignUpEvent.ShowMessage(UiText.StringResource(R.string.successfully_signup))
+//                        )
 //                        _uiState.value = UIState.Success
-//                        _onRegister.emit(Unit)
 //                        _signUpUiState.value = _signUpUiState.value.copy(
-//                            emailText = ""
+//                            isLoading = false
 //                        )
 //                    }
-//                    is Resource.Loading -> _uiState.value = UIState.Loading
-//                    is Resource.Error -> _uiState.value =  UIState.Error(error = it.exception.toString())
+//                    is Resource.Loading -> {
+//                        _uiState.value = UIState.Loading
+//                        _signUpUiState.value = _signUpUiState.value.copy(
+//                            isLoading = false
+//                        )
+//                    }
+//                    is Resource.Error -> {
+//                        _eventFlow.emit(
+//                            SignUpEvent.ShowMessage(uiText = it.uiText ?: UiText.unknownError())
+//                        )
+//                        _uiState.value = UIState.Error(error = it.exception.toString())
+//                        _signUpUiState.value = _signUpUiState.value.copy(
+//                            isLoading = false
+//                        )
+//                    }
 //                }
 //            }
+
+        viewModelScope.launch {
+            _signUpUiState.value = _signUpUiState.value.copy(
+                isLoading = true
+            )
+            val signUpResult = authRepository.signUp(
+                signUpRequest = SignUpRequest(
+                    email = signUpUiState.value.emailText,
+                    username = signUpUiState.value.usernameText,
+                    password = signUpUiState.value.passwordText
+                )
+            )
+            when (signUpResult) {
+                is Resource.Success -> {
+                    _eventFlow.emit(
+                        SignUpEvent.ShowMessage(UiText.StringResource(R.string.successfully_signup))
+                    )
+                    _onRegister.emit(Unit)
+                    _uiState.value = UIState.Success
+                    _signUpUiState.value = _signUpUiState.value.copy(
+                        isLoading = false
+                    )
+                }
+                is Resource.Loading -> {
+                    _uiState.value = UIState.Loading
+                    _signUpUiState.value = _signUpUiState.value.copy(
+                        isLoading = false
+                    )
+                }
+                is Resource.Error -> {
+                    _eventFlow.emit(
+                        SignUpEvent.ShowMessage(
+                            uiText = signUpResult.uiText ?: UiText.unknownError()
+                        )
+                    )
+                    _uiState.value = UIState.Error(error = signUpResult.exception.toString())
+                    _signUpUiState.value = _signUpUiState.value.copy(
+                        isLoading = false
+                    )
+                }
+            }
         }
     }
 }

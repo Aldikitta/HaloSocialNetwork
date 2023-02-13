@@ -11,7 +11,7 @@ class AuthApiImpl @Inject constructor(
     private val httpClient: HttpClient
 ) : AuthApi {
     override suspend fun signUp(signUpRequest: SignUpRequest): ApiResponse<Unit> {
-        return httpClient.post("/api/user/creat") {
+        return httpClient.post("/api/user/create") {
             setBody(signUpRequest)
         }.body()
     }

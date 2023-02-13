@@ -19,17 +19,18 @@ class AuthRepositoryImpl @Inject constructor(
 ) : AuthRepository {
     override suspend fun signUp(signUpRequest: SignUpRequest): Resource<Unit> {
         return try {
+//            Resource.Loading(true)
             val response = authApi.signUp(signUpRequest = signUpRequest)
             if (response.successful) {
-                Resource.Loading(true)
                 Resource.Success(Unit)
-                Resource.Loading(false)
+//                Resource.Loading(false)
             } else {
                 response.message?.let { msg ->
                     Resource.Error(uiText = UiText.DynamicString(msg))
                 } ?: Resource.Error(uiText = UiText.StringResource(R.string.error_unknown))
-                Resource.Loading(false)
+//                Resource.Loading(false)
             }
+//            Resource.Loading(false)
         } catch (e: IOException) {
             println("1")
             Resource.Error(

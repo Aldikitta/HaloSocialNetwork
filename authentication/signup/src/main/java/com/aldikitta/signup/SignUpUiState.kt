@@ -22,6 +22,7 @@ data class SignUpUiState(
     val validateUsername: Boolean = true,
     val validatePassword: Boolean = true,
     val validateConfirmPassword: Boolean = true,
-    val errorMessage: String = ""
+    val errorMessage: String = "",
 
+    val isLoading: Boolean = false
 )
