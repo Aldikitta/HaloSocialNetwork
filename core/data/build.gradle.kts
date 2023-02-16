@@ -3,7 +3,6 @@ plugins {
     id("aldikitta.android.hilt")
     id("kotlinx-serialization")
 //    alias(libs.plugins.com.google.protobuf)
-//    alias(libs.plugins.org.jetbrains.dokka)
 }
 
 android {

@@ -1,7 +1,6 @@
 plugins {
     id("aldikitta.android.library")
     id("aldikitta.android.hilt")
-//    alias(libs.plugins.org.jetbrains.dokka)
 }
 
 android {
