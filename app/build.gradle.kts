@@ -3,8 +3,23 @@ plugins {
     id("aldikitta.android.application.compose")
     id("aldikitta.android.hilt")
     id("kotlinx-serialization")
-
+//    alias(libs.plugins.org.jetbrains.dokka)
 }
+
+//protobuf {
+//    protoc {
+//        artifact = "com.google.protobuf:protoc:3.9.1"
+//    }
+//    generateProtoTasks {
+//        ofSourceSet("main").forEach { task ->
+//            task.builtins {
+//                getByName("java") {
+//                    option("lite")
+//                }
+//            }
+//        }
+//    }
+//}
 
 android {
     namespace = "com.aldikitta.hollahalo"

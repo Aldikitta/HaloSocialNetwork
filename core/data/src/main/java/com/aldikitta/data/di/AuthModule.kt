@@ -37,8 +37,7 @@ object AuthModule {
 //                    explicitNulls = true
 //                    encodeDefaults = false
 
-                }
-                )
+                })
                 engine {
                     connectTimeout = 10_000
                     socketTimeout = 10_000
@@ -50,7 +49,6 @@ object AuthModule {
                     override fun log(message: String) {
                         Log.v("ktor_logger:", message)
                     }
-
                 }
                 level = LogLevel.ALL
             }

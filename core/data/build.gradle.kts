@@ -2,6 +2,8 @@ plugins {
     id("aldikitta.android.library")
     id("aldikitta.android.hilt")
     id("kotlinx-serialization")
+//    alias(libs.plugins.com.google.protobuf)
+//    alias(libs.plugins.org.jetbrains.dokka)
 }
 
 android {
@@ -22,4 +24,8 @@ dependencies {
     implementation(libs.io.ktor.ktor.client.content.negotiation)
     implementation(libs.io.ktor.ktor.serialization.kotlinx.json)
     implementation(libs.io.ktor.ktor.client.logging.jvm)
+
+    //Datastore-Protobuf
+    implementation(libs.androidx.datastore.datastore.preferences)
+//    implementation(com.google.protobuf.javalite)
 }
