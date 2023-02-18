@@ -3,22 +3,10 @@ plugins {
     id("aldikitta.android.application.compose")
     id("aldikitta.android.hilt")
     id("kotlinx-serialization")
+//    id("nowinandroid.android.application.firebase")
+    id("com.google.firebase.crashlytics")
+    id("com.google.gms.google-services")
 }
-
-//protobuf {
-//    protoc {
-//        artifact = "com.google.protobuf:protoc:3.9.1"
-//    }
-//    generateProtoTasks {
-//        ofSourceSet("main").forEach { task ->
-//            task.builtins {
-//                getByName("java") {
-//                    option("lite")
-//                }
-//            }
-//        }
-//    }
-//}
 
 android {
     namespace = "com.aldikitta.hollahalo"
@@ -70,4 +58,11 @@ dependencies {
     implementation(libs.androidx.tracing)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.ui.tooling.preview)
+
+
+
+    implementation(platform("com.google.firebase:firebase-bom:31.2.2"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx:21.2.0")
+
 }
