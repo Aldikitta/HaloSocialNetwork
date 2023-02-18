@@ -12,11 +12,9 @@ java {
 dependencies {
     compileOnly(libs.android.gradle.plugin)
     compileOnly(libs.org.jetbrains.kotlinx.kotlinx.gradle.plugin)
-//    compileOnly(libs.firebase.performance.gradle)
-//    compileOnly(libs.firebase.crashlytics.gradle)
     compileOnly(libs.ksp.gradlePlugin)
-//    compileOnly(libs.com.google.firebase.crashlytics.gradle)
-//    compileOnly(libs.com.google.firebase.performance.gradle)
+    compileOnly(libs.com.google.firebase.crashlytics.gradle)
+    compileOnly(libs.com.google.firebase.performance.gradle)
 }
 
 gradlePlugin {
@@ -46,7 +44,7 @@ gradlePlugin {
             implementationClass = "AndroidFeatureConventionPlugin"
         }
         register("androidFirebase") {
-            id = "nowinandroid.android.application.firebase"
+            id = "aldikitta.android.application.firebase"
             implementationClass = "AndroidApplicationFirebaseConventionPlugin"
         }
     }
