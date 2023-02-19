@@ -67,7 +67,6 @@ fun SignUpScreen(
     }
 
     when (uiState) {
-        is UIState.Initial -> Unit
         is UIState.Loading -> CircularProgressIndicator()
         is UIState.Success -> {
             if (openDialog.value) {

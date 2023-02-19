@@ -1,13 +1,11 @@
-package com.aldikitta.data.di
+package com.aldikitta.datastore.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.dataStoreFile
-import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.datastore.preferences.preferencesDataStoreFile
+import com.aldikitta.core.data.LoginTokenPreferences
+import com.aldikitta.datastore.UserPreferencesSerializer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,10 +22,14 @@ import javax.inject.Singleton
 object DataStoreModule {
     @Provides
     @Singleton
-    fun providesUserPreferencesDataStore(@ApplicationContext context: Context):
-            DataStore<Preferences> = PreferenceDataStoreFactory.create(
-        produceFile = {
-            context.preferencesDataStoreFile("auth_token")
-        }
-    )
+    fun providesUserPreferencesDataStore(
+        @ApplicationContext context: Context,
+        ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+        userPreferencesSerializer: UserPreferencesSerializer,
+    ): DataStore<LoginTokenPreferences> = DataStoreFactory.create(
+        serializer = userPreferencesSerializer,
+        scope = CoroutineScope(ioDispatcher + SupervisorJob()),
+    ){
+        context.dataStoreFile("login_token_preferences.pb")
+    }
 }

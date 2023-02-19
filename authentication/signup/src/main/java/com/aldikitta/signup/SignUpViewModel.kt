@@ -19,7 +19,7 @@ class SignUpViewModel @Inject constructor(
     private val _signUpUiState = MutableStateFlow(SignUpUiState())
     val signUpUiState = _signUpUiState.asStateFlow()
 
-    private val _uiState: MutableStateFlow<UIState> = MutableStateFlow(UIState.Initial)
+    private val _uiState: MutableStateFlow<UIState> = MutableStateFlow(UIState.Loading)
     val uiState: StateFlow<UIState> = _uiState.asStateFlow()
 
     private val _eventFlow = MutableSharedFlow<SignUpEvent>()
@@ -109,47 +109,45 @@ class SignUpViewModel @Inject constructor(
                 )
             }
             is SignUpUiEvent.SignUp -> {
-                signUp()
-            }
-        }
-    }
-
-    private fun signUp() {
-        viewModelScope.launch {
-            _signUpUiState.value = _signUpUiState.value.copy(
-                isLoading = true
-            )
-            authRepository.signUp(
-                signUpRequest = SignUpRequest(
-                    email = signUpUiState.value.emailText,
-                    username = signUpUiState.value.usernameText,
-                    password = signUpUiState.value.passwordText
-                )
-            ).let {
-                when (it) {
-                    is Resource.Success -> {
-                        _eventFlow.emit(
-                            SignUpEvent.ShowMessage(UiText.StringResource(R.string.successfully_signup))
+                viewModelScope.launch {
+                    _signUpUiState.value = _signUpUiState.value.copy(
+                        isLoading = true
+                    )
+                    authRepository.signUp(
+                        signUpRequest = SignUpRequest(
+                            email = signUpUiState.value.emailText,
+                            username = signUpUiState.value.usernameText,
+                            password = signUpUiState.value.passwordText
                         )
-                        _uiState.value = UIState.Success
-                        _signUpUiState.value = _signUpUiState.value.copy(
-                            isLoading = false
-                        )
-                    }
-                    is Resource.Loading -> {
-                        _uiState.value = UIState.Loading
-                        _signUpUiState.value = _signUpUiState.value.copy(
-                            isLoading = false
-                        )
-                    }
-                    is Resource.Error -> {
-                        _eventFlow.emit(
-                            SignUpEvent.ShowMessage(uiText = it.uiText ?: UiText.unknownError())
-                        )
-                        _uiState.value = UIState.Error(error = it.exception.toString())
-                        _signUpUiState.value = _signUpUiState.value.copy(
-                            isLoading = false
-                        )
+                    ).let {
+                        when (it) {
+                            is Resource.Success -> {
+                                _eventFlow.emit(
+                                    SignUpEvent.ShowMessage(UiText.StringResource(R.string.successfully_signup))
+                                )
+                                _uiState.value = UIState.Success
+                                _signUpUiState.value = _signUpUiState.value.copy(
+                                    isLoading = false
+                                )
+                            }
+                            is Resource.Loading -> {
+                                _uiState.value = UIState.Loading
+                                _signUpUiState.value = _signUpUiState.value.copy(
+                                    isLoading = false
+                                )
+                            }
+                            is Resource.Error -> {
+                                _eventFlow.emit(
+                                    SignUpEvent.ShowMessage(
+                                        uiText = it.uiText ?: UiText.unknownError()
+                                    )
+                                )
+                                _uiState.value = UIState.Error(error = it.exception.toString())
+                                _signUpUiState.value = _signUpUiState.value.copy(
+                                    isLoading = false
+                                )
+                            }
+                        }
                     }
                 }
             }
