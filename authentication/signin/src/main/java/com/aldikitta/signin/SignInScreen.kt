@@ -1,6 +1,8 @@
 package com.aldikitta.signin
 
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -8,34 +10,97 @@ import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.aldikitta.designsystem.DevicePreviews
+import com.aldikitta.data.util.asString
 import com.aldikitta.designsystem.R
 import com.aldikitta.designsystem.components.GreetingAuth
 import com.aldikitta.designsystem.components.SocialTextField
-import com.aldikitta.designsystem.theme.HollaHaloTheme
 import com.aldikitta.designsystem.theme.spacing
-import com.aldikitta.feed.navigation.navigateToFeed
+import com.aldikitta.signup.component.AlertDialogFailedSignUp
+import com.aldikitta.signup.component.AlertDialogSuccessSignUp
 import com.aldikitta.signup.navigation.navigateToSignUpScreen
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun SignInScreen(
     navController: NavController,
-    signInViewModel: SignInViewModel = hiltViewModel()
-) {
+    signInViewModel: SignInViewModel = hiltViewModel(),
+    onSignIn: () -> Unit = {},
+
+    ) {
     val signInUiState by signInViewModel.signInUiState.collectAsStateWithLifecycle()
+    val uiState by signInViewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val interactionSource = remember { MutableInteractionSource() }
+    val pressed by interactionSource.collectIsPressedAsState()
+
+    val openDialog = remember { mutableStateOf(true) }
+    val message = remember { mutableStateOf("") }
+
+    LaunchedEffect(pressed) {
+        when (uiState) {
+            is UIStateSignIn.Error -> {
+                openDialog.value = true
+            }
+            is UIStateSignIn.Success -> {
+                openDialog.value = true
+            }
+            else -> {
+                openDialog.value = true
+            }
+        }
+        signInViewModel.eventFlow.collectLatest {
+            when (it) {
+                is SignInEvent.ShowMessage -> {
+                    message.value = it.uiText.asString(context)
+                }
+            }
+        }
+    }
+
+    when (uiState) {
+        is UIStateSignIn.Initial -> Unit
+        is UIStateSignIn.Success -> {
+            if (openDialog.value) {
+                AlertDialogSuccessSignUp(
+                    onDismissRequest = {
+                        openDialog.value = false
+                        onSignIn()
+                    },
+                    onConfirmButton = {
+                        openDialog.value = false
+                        onSignIn()
+                    },
+                    message = message.value
+                )
+            }
+        }
+        is UIStateSignIn.Error -> {
+            if (openDialog.value) {
+                AlertDialogFailedSignUp(
+                    onDismissRequest = {
+                        openDialog.value = false
+                    },
+                    onConfirmButton = {
+                        openDialog.value = false
+                    },
+                    errorMessage = message.value
+                )
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -137,11 +202,26 @@ fun SignInScreen(
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
             Button(
                 onClick = {
-                    navController.navigateToFeed()
+                    signInViewModel.onEvent(SignInUiEvent.SignIn)
                 },
-                enabled = if (signInUiState.usernameText.isEmpty() || signInUiState.passwordText.isEmpty()) false else signInUiState.validateUsername && signInUiState.validatePassword
+                interactionSource = interactionSource,
+                enabled = if (
+                    signInUiState.usernameText.isEmpty() ||
+                    signInUiState.passwordText.isEmpty()
+                )
+                    false
+                else
+                    signInUiState.validateUsername &&
+                            signInUiState.validatePassword
             ) {
-                Text(text = stringResource(id = R.string.take_me_in))
+                if (signInUiState.isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(CenterVertically)
+                    )
+                } else {
+                    Text(text = stringResource(id = R.string.take_me_in))
+
+                }
             }
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))
             Text(
@@ -155,7 +235,7 @@ fun SignInScreen(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 OutlinedButton(
-                    onClick = { /*TODO*/ },
+                    onClick = signInViewModel::aldi,
                     modifier = Modifier
                         .weight(1f)
                         .padding(MaterialTheme.spacing.extraSmall)
@@ -204,9 +284,6 @@ fun SignInScreen(
             Text(
                 modifier = Modifier.clickable {
                     navController.navigateToSignUpScreen()
-//                    navController.navigate(Screen.RegisterScreen.route) {
-////                        popUpToId { inclusive = true }
-//                    }
                 },
                 text = stringResource(id = R.string.apply),
                 color = MaterialTheme.colorScheme.primary

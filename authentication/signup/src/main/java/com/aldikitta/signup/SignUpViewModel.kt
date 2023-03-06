@@ -3,10 +3,10 @@ package com.aldikitta.signup
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aldikitta.data.remote.auth.dto.request.SignUpRequest
-import com.aldikitta.data.repository.auth.AuthRepository
+import com.aldikitta.auth.dto.request.SignUpRequest
 import com.aldikitta.data.util.Resource
 import com.aldikitta.data.util.UiText
+import com.aldikitta.domain.usecase.auth.SignUpUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -14,13 +14,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
+    private val signUpUseCase: SignUpUseCase
 ) : ViewModel() {
     private val _signUpUiState = MutableStateFlow(SignUpUiState())
     val signUpUiState = _signUpUiState.asStateFlow()
 
-    private val _uiState: MutableStateFlow<UIState> = MutableStateFlow(UIState.Loading)
-    val uiState: StateFlow<UIState> = _uiState.asStateFlow()
+    private val _uiState: MutableStateFlow<UIStateSignUp> = MutableStateFlow(UIStateSignUp.Initial)
+    val uiState: StateFlow<UIStateSignUp> = _uiState.asStateFlow()
 
     private val _eventFlow = MutableSharedFlow<SignUpEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
@@ -113,7 +113,7 @@ class SignUpViewModel @Inject constructor(
                     _signUpUiState.value = _signUpUiState.value.copy(
                         isLoading = true
                     )
-                    authRepository.signUp(
+                    signUpUseCase(
                         signUpRequest = SignUpRequest(
                             email = signUpUiState.value.emailText,
                             username = signUpUiState.value.usernameText,
@@ -125,15 +125,15 @@ class SignUpViewModel @Inject constructor(
                                 _eventFlow.emit(
                                     SignUpEvent.ShowMessage(UiText.StringResource(R.string.successfully_signup))
                                 )
-                                _uiState.value = UIState.Success
+                                _uiState.value = UIStateSignUp.Success
                                 _signUpUiState.value = _signUpUiState.value.copy(
                                     isLoading = false
                                 )
                             }
                             is Resource.Loading -> {
-                                _uiState.value = UIState.Loading
+                                _uiState.value = UIStateSignUp.Initial
                                 _signUpUiState.value = _signUpUiState.value.copy(
-                                    isLoading = false
+                                    isLoading = true
                                 )
                             }
                             is Resource.Error -> {
@@ -142,7 +142,7 @@ class SignUpViewModel @Inject constructor(
                                         uiText = it.uiText ?: UiText.unknownError()
                                     )
                                 )
-                                _uiState.value = UIState.Error(error = it.exception.toString())
+                                _uiState.value = UIStateSignUp.Error(error = it.exception.toString())
                                 _signUpUiState.value = _signUpUiState.value.copy(
                                     isLoading = false
                                 )

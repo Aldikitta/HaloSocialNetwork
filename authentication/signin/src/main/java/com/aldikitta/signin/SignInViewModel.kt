@@ -2,15 +2,12 @@ package com.aldikitta.signin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aldikitta.data.remote.auth.dto.request.SignInRequest
-import com.aldikitta.data.remote.auth.dto.request.SignUpRequest
-import com.aldikitta.data.repository.auth.AuthRepository
+import com.aldikitta.auth.dto.request.SignInRequest
 import com.aldikitta.data.util.Resource
 import com.aldikitta.data.util.UiText
+import com.aldikitta.domain.usecase.auth.AuthenticateUseCase
+import com.aldikitta.domain.usecase.auth.SignInUseCase
 import com.aldikitta.signup.R
-import com.aldikitta.signup.SignUpEvent
-import com.aldikitta.signup.SignUpUiState
-import com.aldikitta.signup.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -18,11 +15,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
+    private val signInUseCase: SignInUseCase,
+    private val authenticateUseCase: AuthenticateUseCase
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<UIState> = MutableStateFlow(UIState.Loading)
-    val uiState: StateFlow<UIState> = _uiState.asStateFlow()
+    private val _uiState: MutableStateFlow<UIStateSignIn> = MutableStateFlow(UIStateSignIn.Initial)
+    val uiState: StateFlow<UIStateSignIn> = _uiState.asStateFlow()
 
     private val _signInUiState = MutableStateFlow(SignInUiState())
     val signInUiState = _signInUiState.asStateFlow()
@@ -75,7 +73,7 @@ class SignInViewModel @Inject constructor(
                     _signInUiState.value = _signInUiState.value.copy(
                         isLoading = true
                     )
-                    authRepository.signIn(
+                    signInUseCase(
                         signInRequest = SignInRequest(
                             email = signInUiState.value.usernameText,
                             password = signInUiState.value.passwordText
@@ -86,15 +84,15 @@ class SignInViewModel @Inject constructor(
                                 _eventFlow.emit(
                                     SignInEvent.ShowMessage(UiText.StringResource(R.string.successfully_signup))
                                 )
-                                _uiState.value = UIState.Success
+                                _uiState.value = UIStateSignIn.Success
                                 _signInUiState.value = _signInUiState.value.copy(
                                     isLoading = false
                                 )
                             }
                             is Resource.Loading -> {
-                                _uiState.value = UIState.Loading
+                                _uiState.value = UIStateSignIn.Initial
                                 _signInUiState.value = _signInUiState.value.copy(
-                                    isLoading = false
+                                    isLoading = true
                                 )
                             }
                             is Resource.Error -> {
@@ -103,7 +101,8 @@ class SignInViewModel @Inject constructor(
                                         uiText = it.uiText ?: UiText.unknownError()
                                     )
                                 )
-                                _uiState.value = UIState.Error(error = it.exception.toString())
+                                _uiState.value =
+                                    UIStateSignIn.Error(error = it.exception.toString())
                                 _signInUiState.value = _signInUiState.value.copy(
                                     isLoading = false
                                 )
@@ -112,6 +111,12 @@ class SignInViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun aldi() {
+        viewModelScope.launch {
+            authenticateUseCase()
         }
     }
 }

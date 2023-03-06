@@ -1,7 +1,9 @@
 package com.aldikitta.domain.di
 
+import com.aldikitta.data.repository.auth.AuthRepository
+import com.aldikitta.domain.usecase.auth.AuthenticateUseCase
+import com.aldikitta.domain.usecase.auth.SignInUseCase
 import com.aldikitta.domain.usecase.auth.SignUpUseCase
-import com.aldikitta.domain.usecase.auth.SignUpUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,7 +13,22 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object UseCaseModule {
+
     @Provides
     @Singleton
-    fun getSignUpUseCaseImpl(authUseCaseImpl: SignUpUseCaseImpl): SignUpUseCase = authUseCaseImpl
+    fun provideAuthenticationUseCase(repository: AuthRepository): AuthenticateUseCase {
+        return AuthenticateUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSignInUseCase(repository: AuthRepository): SignInUseCase {
+        return SignInUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSignUpUseCase(repository: AuthRepository): SignUpUseCase {
+        return SignUpUseCase(repository)
+    }
 }
