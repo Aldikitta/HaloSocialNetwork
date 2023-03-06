@@ -47,10 +47,10 @@ fun SignUpScreen(
 
     LaunchedEffect(pressed) {
         when (uiState) {
-            is UIState.Error -> {
+            is UIStateSignUp.Error -> {
                 openDialog.value = true
             }
-            is UIState.Success -> {
+            is UIStateSignUp.Success -> {
                 openDialog.value = true
             }
             else -> {
@@ -67,13 +67,13 @@ fun SignUpScreen(
     }
 
     when (uiState) {
-        is UIState.Initial -> Unit
-        is UIState.Loading -> CircularProgressIndicator()
-        is UIState.Success -> {
+        is UIStateSignUp.Initial -> Unit
+        is UIStateSignUp.Success -> {
             if (openDialog.value) {
                 AlertDialogSuccessSignUp(
                     onDismissRequest = {
                         openDialog.value = false
+                        navController.popBackStack()
                     },
                     onConfirmButton = {
                         openDialog.value = false
@@ -83,7 +83,7 @@ fun SignUpScreen(
                 )
             }
         }
-        is UIState.Error -> {
+        is UIStateSignUp.Error -> {
             if (openDialog.value) {
                 AlertDialogFailedSignUp(
                     onDismissRequest = {
@@ -317,8 +317,6 @@ fun SignUpScreen(
             Text(
                 modifier = Modifier.clickable {
                     navController.popBackStack()
-                    //                    navController.navigateUp()
-//                    navController.navigate(route = Screen.MainFeedScreen.route)
                 },
                 text = stringResource(id = R.string.apply),
                 color = MaterialTheme.colorScheme.primary

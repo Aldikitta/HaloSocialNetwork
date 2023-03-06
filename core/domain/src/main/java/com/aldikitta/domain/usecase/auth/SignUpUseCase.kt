@@ -1,10 +1,14 @@
 package com.aldikitta.domain.usecase.auth
 
-import com.aldikitta.data.dto.response.ApiResponse
-import com.aldikitta.data.remote.auth.dto.request.SignUpRequest
+import com.aldikitta.auth.dto.request.SignUpRequest
+import com.aldikitta.data.repository.auth.AuthRepository
 import com.aldikitta.data.util.Resource
-import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-interface SignUpUseCase {
-    operator fun invoke(signUpRequest: SignUpRequest): Flow<Resource<ApiResponse<Unit>>>
+class SignUpUseCase @Inject constructor(
+    private val authRepository: AuthRepository
+) {
+    suspend operator fun invoke(signUpRequest: SignUpRequest): Resource<Unit> {
+        return authRepository.signUp(signUpRequest = signUpRequest)
+    }
 }

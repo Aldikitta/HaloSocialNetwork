@@ -1,10 +1,8 @@
 package com.aldikitta.signin.navigation
 
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
+import androidx.navigation.*
 import androidx.navigation.compose.composable
-import androidx.navigation.navigation
+import com.aldikitta.feed.navigation.navigateToFeed
 import com.aldikitta.signin.SignInScreen
 
 const val signInGraphRoutePattern = "signIn_screen_graph"
@@ -24,7 +22,16 @@ fun NavGraphBuilder.signInGraph(
     ) {
         composable(route = signInRoute) {
             SignInScreen(
-                navController
+                navController = navController,
+                onSignIn = {
+//                    navController.navigateToFeed(
+//                        navOptions {
+//                            popUpTo(route = signInGraphRoutePattern) {
+//                                inclusive = true
+//                            }
+//                        }
+//                    )
+                }
             )
         }
         nestedGraphs()

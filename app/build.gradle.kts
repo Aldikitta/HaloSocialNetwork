@@ -3,22 +3,8 @@ plugins {
     id("aldikitta.android.application.compose")
     id("aldikitta.android.hilt")
     id("kotlinx-serialization")
+    id("aldikitta.android.application.firebase")
 }
-
-//protobuf {
-//    protoc {
-//        artifact = "com.google.protobuf:protoc:3.9.1"
-//    }
-//    generateProtoTasks {
-//        ofSourceSet("main").forEach { task ->
-//            task.builtins {
-//                getByName("java") {
-//                    option("lite")
-//                }
-//            }
-//        }
-//    }
-//}
 
 android {
     namespace = "com.aldikitta.hollahalo"
@@ -52,6 +38,7 @@ android {
 
 dependencies {
     implementation(project(":core:data"))
+    implementation(project(":core:domain"))
     implementation(project(":core:designsystem"))
     implementation(project(":authentication:signin"))
     implementation(project(":authentication:signup"))
@@ -70,4 +57,6 @@ dependencies {
     implementation(libs.androidx.tracing)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.ui.tooling.preview)
+
+    implementation(libs.androidx.hilt.hilt.navigation.compose)
 }
