@@ -38,6 +38,7 @@ android {
 
 dependencies {
     implementation(project(":core:data"))
+    implementation(project(":core:domain"))
     implementation(project(":core:designsystem"))
     implementation(project(":authentication:signin"))
     implementation(project(":authentication:signup"))
@@ -56,4 +57,6 @@ dependencies {
     implementation(libs.androidx.tracing)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.ui.tooling.preview)
+
+    implementation(libs.androidx.hilt.hilt.navigation.compose)
 }

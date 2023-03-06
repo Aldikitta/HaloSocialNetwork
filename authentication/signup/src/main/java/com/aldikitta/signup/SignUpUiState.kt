@@ -1,12 +1,11 @@
 package com.aldikitta.signup
 
 import androidx.compose.runtime.Immutable
-import com.aldikitta.data.dto.response.ApiResponse
 
-sealed interface UIState {
-    object Loading : UIState
-    object Success : UIState
-    data class Error(val error: String) : UIState
+sealed interface UIStateSignUp {
+    object Initial : UIStateSignUp
+    object Success : UIStateSignUp
+    data class Error(val error: String) : UIStateSignUp
 }
 @Immutable
 data class SignUpUiState(

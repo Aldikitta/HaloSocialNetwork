@@ -2,10 +2,10 @@ package com.aldikitta.signin
 
 import androidx.compose.runtime.Immutable
 
-sealed interface UIState {
-    object Loading : UIState
-    object Success : UIState
-    data class Error(val error: String) : UIState
+sealed interface UIStateSignIn {
+    object Initial : UIStateSignIn
+    object Success : UIStateSignIn
+    data class Error(val error: String) : UIStateSignIn
 }
 @Immutable
 data class SignInUiState(

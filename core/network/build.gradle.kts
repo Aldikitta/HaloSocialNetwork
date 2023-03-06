@@ -5,18 +5,15 @@ plugins {
 }
 
 android {
-    namespace = "com.aldikitta.data"
+    namespace = "com.aldikitta.network"
 }
 
 dependencies {
     implementation(project(":core:model"))
-    implementation(project(":core:network"))
     implementation(libs.androidx.core.core.ktx)
     implementation(libs.org.jetbrains.kotlinx.kotlinx.coroutines.android)
     implementation(libs.androidx.lifecycle.lifecycle.runtime.ktx)
     implementation(libs.javax.inject.javax.inject)
-    implementation(libs.androidx.compose.runtime)
-    implementation(libs.androidx.compose.ui)
 
     //Ktor-Client
     implementation(libs.io.ktor.ktor.client.android)
@@ -25,6 +22,9 @@ dependencies {
     implementation(libs.io.ktor.ktor.serialization.kotlinx.json)
     implementation(libs.io.ktor.ktor.client.logging.jvm)
 
-    //Datastore
-    implementation(libs.androidx.datastore.datastore.preferences)
+    //Retrofit-Gson
+    implementation(libs.com.squareup.retrofit2.retrofit)
+    implementation(libs.com.squareup.retrofit2.converter.gson)
+    implementation(libs.com.squareup.okhttp3.okhttp)
+    implementation(libs.com.squareup.okhttp3.logging.interceptor)
 }
