@@ -1,5 +1,6 @@
 package com.aldikitta.signin
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aldikitta.auth.dto.request.SignInRequest
@@ -77,8 +78,12 @@ class SignInViewModel @Inject constructor(
                         signInRequest = SignInRequest(
                             email = signInUiState.value.usernameText,
                             password = signInUiState.value.passwordText
+
                         )
                     ).let {
+                        Log.d("SignIn", signInUiState.value.usernameText)
+                        Log.d("SignIn", signInUiState.value.passwordText)
+
                         when (it) {
                             is Resource.Success -> {
                                 _eventFlow.emit(

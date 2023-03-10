@@ -201,6 +201,7 @@ fun SignInScreen(
             )
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
             Button(
+                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.large).fillMaxWidth(),
                 onClick = {
                     signInViewModel.onEvent(SignInUiEvent.SignIn)
                 },
@@ -219,8 +220,10 @@ fun SignInScreen(
                         modifier = Modifier.align(CenterVertically)
                     )
                 } else {
-                    Text(text = stringResource(id = R.string.take_me_in))
-
+                    Text(
+                        modifier = Modifier.padding(MaterialTheme.spacing.small),
+                        text = stringResource(id = R.string.take_me_in), style = MaterialTheme.typography.bodyMedium
+                    )
                 }
             }
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.large))

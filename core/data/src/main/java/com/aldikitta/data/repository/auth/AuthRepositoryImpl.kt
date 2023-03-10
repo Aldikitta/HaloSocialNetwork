@@ -12,15 +12,13 @@ import javax.inject.Inject
 import com.aldikitta.data.R
 import com.aldikitta.data.util.tryCatch
 import com.aldikitta.network.ktor_client.auth.KtorClientAuthApi
-import io.ktor.client.plugins.*
-import io.ktor.utils.io.errors.*
 
 class AuthRepositoryImpl @Inject constructor(
     private val authApi: KtorClientAuthApi,
     private val dataStore: DataStore<Preferences>,
 ) : AuthRepository {
     override suspend fun signUp(signUpRequest: SignUpRequest): Resource<Unit> {
-        return try {
+        return tryCatch {
             val response = authApi.signUp(signUpRequest = signUpRequest)
             if (response.successful) {
                 Resource.Success(Unit)
@@ -29,43 +27,7 @@ class AuthRepositoryImpl @Inject constructor(
                     Resource.Error(uiText = UiText.DynamicString(msg))
                 } ?: Resource.Error(uiText = UiText.StringResource(R.string.error_unknown))
             }
-        } catch (t: IOException) {
-            println("Error IOException")
-            Resource.Error(
-                uiText = UiText.StringResource(R.string.error_couldnt_reach_server)
-            )
-        } catch (t: Exception) {
-            println("Error Exception")
-            Resource.Error(
-                uiText = UiText.StringResource(R.string.oops_something_went_wrong)
-            )
-
-        } catch (t: RedirectResponseException) {
-            println("Error RedirectResponseException")
-            Resource.Error(
-                uiText = UiText.StringResource(R.string.oops_redirect_error)
-            )
-        } catch (t: ServerResponseException) {
-            println("Error ServerResponseException")
-            Resource.Error(
-                uiText = UiText.StringResource(R.string.oops_server_error)
-            )
-        } catch (t: ClientRequestException) {
-            println("Error ClientRequestException")
-            Resource.Error(
-                uiText = UiText.StringResource(R.string.oops_client_error)
-            )
         }
-//        return tryCatch {
-//            val response = authApi.signUp(signUpRequest = signUpRequest)
-//            if (response.successful) {
-//                Resource.Success(Unit)
-//            } else {
-//                response.message?.let { msg ->
-//                    Resource.Error(uiText = UiText.DynamicString(msg))
-//                } ?: Resource.Error(uiText = UiText.StringResource(R.string.error_unknown))
-//            }
-//        }
     }
 
     override suspend fun signIn(signInRequest: SignInRequest): Resource<Unit> {
@@ -76,6 +38,7 @@ class AuthRepositoryImpl @Inject constructor(
             val response = authApi.signIn(signInRequest = signInRequest)
             if (response.successful) {
                 response.data?.let { authResponse ->
+                    println("Overriding token with ${authResponse.token}")
                     dataStore.edit { pref ->
                         pref[token] = authResponse.token
                         pref[userId] = authResponse.userId

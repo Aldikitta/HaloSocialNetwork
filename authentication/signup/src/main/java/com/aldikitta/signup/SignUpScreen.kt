@@ -1,5 +1,6 @@
 package com.aldikitta.signup
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -16,6 +17,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -246,6 +248,7 @@ fun SignUpScreen(
                         contentDescription = stringResource(id = R.string.confirmPassword)
                     )
                 },
+                imeAction = ImeAction.Done,
                 keyboardType = KeyboardType.Password,
                 trailingIcon = {
                     Row {
@@ -277,6 +280,9 @@ fun SignUpScreen(
             )
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
             Button(
+                modifier = Modifier
+                    .padding(horizontal = MaterialTheme.spacing.large)
+                    .fillMaxWidth(),
                 onClick = {
                     signUpViewModel.onEvent(SignUpUiEvent.SignUp)
                 },
@@ -297,10 +303,14 @@ fun SignUpScreen(
             ) {
                 if (signUpState.isLoading) {
                     CircularProgressIndicator(
-                        modifier = Modifier.align(CenterVertically)
+                        modifier = Modifier.align(CenterVertically),
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 } else {
-                    Text(text = stringResource(id = R.string.sign_me_up))
+                    Text(
+                        modifier = Modifier.padding(MaterialTheme.spacing.small),
+                        text = stringResource(id = R.string.sign_me_up), style = MaterialTheme.typography.bodyMedium
+                    )
                 }
 
             }

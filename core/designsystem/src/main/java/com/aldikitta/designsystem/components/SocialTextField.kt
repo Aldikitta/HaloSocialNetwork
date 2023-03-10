@@ -8,6 +8,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -27,7 +28,8 @@ fun SocialTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     errorMessage: String = "",
-    maxLength: Int = 20
+    maxLength: Int = 20,
+    imeAction: ImeAction = ImeAction.Next
 ) {
     OutlinedTextField(
         modifier = modifier
@@ -48,7 +50,8 @@ fun SocialTextField(
         },
         leadingIcon = leadingIcon,
         keyboardOptions = KeyboardOptions(
-            keyboardType = keyboardType
+            keyboardType = keyboardType,
+            imeAction = imeAction
         ),
         singleLine = true,
         trailingIcon = trailingIcon,

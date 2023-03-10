@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.aldikitta.designsystem"
+    namespace = "com.aldikitta.ui"
 }
 
 dependencies {
