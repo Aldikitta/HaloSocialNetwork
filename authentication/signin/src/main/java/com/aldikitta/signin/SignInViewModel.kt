@@ -8,7 +8,7 @@ import com.aldikitta.data.util.Resource
 import com.aldikitta.data.util.UiText
 import com.aldikitta.domain.usecase.auth.AuthenticateUseCase
 import com.aldikitta.domain.usecase.auth.SignInUseCase
-import com.aldikitta.signup.R
+import com.aldikitta.designsystem.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -87,7 +87,7 @@ class SignInViewModel @Inject constructor(
                         when (it) {
                             is Resource.Success -> {
                                 _eventFlow.emit(
-                                    SignInEvent.ShowMessage(UiText.StringResource(R.string.successfully_signup))
+                                    SignInEvent.ShowMessage(UiText.StringResource(R.string.successfully_signin))
                                 )
                                 _uiState.value = UIStateSignIn.Success
                                 _signInUiState.value = _signInUiState.value.copy(

@@ -38,4 +38,7 @@
     <string name="profile">Profile</string>
     <string name="activity">Activity</string>
     <string name="chat">Chat</string>
+    <string name="signin_success">SignIn Success</string>
+    <string name="signin_failed">SignIn Failed</string>
+    <string name="successfully_signin">Sucessfully SignIn, Welcome Back</string>
 </resources>

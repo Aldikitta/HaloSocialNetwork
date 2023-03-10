@@ -28,9 +28,8 @@ import com.aldikitta.designsystem.R
 import com.aldikitta.designsystem.components.GreetingAuth
 import com.aldikitta.designsystem.components.SocialTextField
 import com.aldikitta.designsystem.theme.spacing
-import com.aldikitta.signup.component.AlertDialogFailedSignUp
-import com.aldikitta.signup.component.AlertDialogSuccessSignUp
 import com.aldikitta.signup.navigation.navigateToSignUpScreen
+import com.aldikitta.ui.alertdialog.HaloAlertDialog
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -74,7 +73,7 @@ fun SignInScreen(
         is UIStateSignIn.Initial -> Unit
         is UIStateSignIn.Success -> {
             if (openDialog.value) {
-                AlertDialogSuccessSignUp(
+                HaloAlertDialog(
                     onDismissRequest = {
                         openDialog.value = false
                         onSignIn()
@@ -83,20 +82,24 @@ fun SignInScreen(
                         openDialog.value = false
                         onSignIn()
                     },
-                    message = message.value
+                    message = message.value,
+                    title = stringResource(id = R.string.signin_success),
+                    heroIcon = Icons.Filled.Check
                 )
             }
         }
         is UIStateSignIn.Error -> {
             if (openDialog.value) {
-                AlertDialogFailedSignUp(
+                HaloAlertDialog(
                     onDismissRequest = {
                         openDialog.value = false
                     },
                     onConfirmButton = {
                         openDialog.value = false
                     },
-                    errorMessage = message.value
+                    message = message.value,
+                    title = stringResource(id = R.string.signin_failed),
+                    heroIcon = Icons.Filled.Error
                 )
             }
         }
@@ -201,7 +204,9 @@ fun SignInScreen(
             )
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
             Button(
-                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.large).fillMaxWidth(),
+                modifier = Modifier
+                    .padding(horizontal = MaterialTheme.spacing.large)
+                    .fillMaxWidth(),
                 onClick = {
                     signInViewModel.onEvent(SignInUiEvent.SignIn)
                 },
@@ -222,7 +227,8 @@ fun SignInScreen(
                 } else {
                     Text(
                         modifier = Modifier.padding(MaterialTheme.spacing.small),
-                        text = stringResource(id = R.string.take_me_in), style = MaterialTheme.typography.bodyMedium
+                        text = stringResource(id = R.string.take_me_in),
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
             }
