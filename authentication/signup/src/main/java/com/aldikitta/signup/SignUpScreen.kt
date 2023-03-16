@@ -1,6 +1,5 @@
 package com.aldikitta.signup
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -26,7 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.aldikitta.data.util.asString
 import com.aldikitta.designsystem.components.GreetingAuth
-import com.aldikitta.designsystem.components.SocialTextField
+import com.aldikitta.ui.textfield.SocialTextField
 import com.aldikitta.designsystem.R
 import com.aldikitta.designsystem.theme.spacing
 import com.aldikitta.signup.component.AlertDialogFailedSignUp

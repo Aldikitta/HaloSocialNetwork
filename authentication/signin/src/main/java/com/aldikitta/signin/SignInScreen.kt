@@ -26,10 +26,10 @@ import androidx.navigation.NavController
 import com.aldikitta.data.util.asString
 import com.aldikitta.designsystem.R
 import com.aldikitta.designsystem.components.GreetingAuth
-import com.aldikitta.designsystem.components.SocialTextField
+import com.aldikitta.ui.textfield.SocialTextField
 import com.aldikitta.designsystem.theme.spacing
 import com.aldikitta.signup.navigation.navigateToSignUpScreen
-import com.aldikitta.ui.alertdialog.HaloAlertDialog
+import com.aldikitta.ui.alertdialog.SocialAlertDialog
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -73,7 +73,7 @@ fun SignInScreen(
         is UIStateSignIn.Initial -> Unit
         is UIStateSignIn.Success -> {
             if (openDialog.value) {
-                HaloAlertDialog(
+                SocialAlertDialog(
                     onDismissRequest = {
                         openDialog.value = false
                         onSignIn()
@@ -90,7 +90,7 @@ fun SignInScreen(
         }
         is UIStateSignIn.Error -> {
             if (openDialog.value) {
-                HaloAlertDialog(
+                SocialAlertDialog(
                     onDismissRequest = {
                         openDialog.value = false
                     },

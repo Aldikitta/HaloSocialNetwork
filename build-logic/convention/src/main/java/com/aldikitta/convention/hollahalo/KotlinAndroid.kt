@@ -9,6 +9,7 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.provideDelegate
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 
 /**
  * Configure base Kotlin with Android options
@@ -24,8 +25,8 @@ internal fun Project.configureKotlinAndroid(
         }
 
         compileOptions {
-            sourceCompatibility = JavaVersion.VERSION_1_8
-            targetCompatibility = JavaVersion.VERSION_1_8
+            sourceCompatibility = JavaVersion.VERSION_17
+            targetCompatibility = JavaVersion.VERSION_17
             isCoreLibraryDesugaringEnabled = true
         }
 
@@ -44,7 +45,7 @@ internal fun Project.configureKotlinAndroid(
             )
 
             // Set JVM target to 1.8
-            jvmTarget = JavaVersion.VERSION_1_8.toString()
+            jvmTarget = JavaVersion.VERSION_17.toString()
         }
     }
 

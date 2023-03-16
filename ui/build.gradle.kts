@@ -9,6 +9,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.core.ktx)
+    implementation(project(":core:designsystem"))
     api(libs.androidx.compose.foundation)
     api(libs.androidx.compose.material3)
     api(libs.androidx.compose.material.material.icons.extended)

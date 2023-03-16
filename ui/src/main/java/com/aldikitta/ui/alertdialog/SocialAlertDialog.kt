@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 
 @Composable
-fun HaloAlertDialog(
+fun SocialAlertDialog(
     onDismissRequest: () -> Unit,
     onConfirmButton: () -> Unit,
     message: String,

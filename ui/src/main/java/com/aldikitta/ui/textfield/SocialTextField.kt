@@ -1,4 +1,4 @@
-package com.aldikitta.designsystem.components
+package com.aldikitta.ui.textfield
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
