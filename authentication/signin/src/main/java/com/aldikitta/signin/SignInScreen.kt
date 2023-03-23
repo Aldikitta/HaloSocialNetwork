@@ -37,8 +37,7 @@ fun SignInScreen(
     navController: NavController,
     signInViewModel: SignInViewModel = hiltViewModel(),
     onSignIn: () -> Unit = {},
-
-    ) {
+) {
     val signInUiState by signInViewModel.signInUiState.collectAsStateWithLifecycle()
     val uiState by signInViewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -53,9 +52,11 @@ fun SignInScreen(
             is UIStateSignIn.Error -> {
                 openDialog.value = true
             }
+
             is UIStateSignIn.Success -> {
                 openDialog.value = true
             }
+
             else -> {
                 openDialog.value = true
             }
@@ -88,6 +89,7 @@ fun SignInScreen(
                 )
             }
         }
+
         is UIStateSignIn.Error -> {
             if (openDialog.value) {
                 SocialAlertDialog(

@@ -178,8 +178,8 @@ ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devto
 
 
 [plugins]
-com-android-application = "com.android.application:8.1.0-alpha09"
-com-android-library = "com.android.library:8.1.0-alpha09"
+com-android-application = "com.android.application:8.1.0-alpha10"
+com-android-library = "com.android.library:8.1.0-alpha10"
 com-github-ben-manes-versions = "com.github.ben-manes.versions:0.44.0"
 com-google-dagger-hilt-android = "com.google.dagger.hilt.android:2.44.2"
 ksp = "com.google.devtools.ksp:1.8.10-1.0.9"
@@ -193,3 +193,4 @@ org-jetbrains-kotlin-jvm = "org.jetbrains.kotlin.jvm:1.8.10"
 org-jetbrains-kotlin-serialization = "org.jetbrains.kotlin.plugin.serialization:1.8.10"
 com-google-protobuf = "com.google.protobuf:0.9.1"
 org-jetbrains-dokka = "org.jetbrains.dokka:1.7.20"
+org-jlleitschuh-gradle-ktlint = "org.jlleitschuh.gradle.ktlint:11.3.1"
