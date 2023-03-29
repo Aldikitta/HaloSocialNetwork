@@ -54,46 +54,9 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun authenticate(): Resource<Unit> {
-//        return tryCatch {
-//            authApi.authenticate()
-//            Resource.Success(Unit)
-//        }
-        return try {
-            Resource.Success(
-                authApi.authenticate()
-            )
-//            println("success with")
-//            Resource.Success(Unit)
-        } catch (e: Throwable) {
-            println("error exception")
-            Resource.Error()
+        return tryCatch {
+            authApi.authenticate()
+            Resource.Success(Unit)
         }
-
-
-//        return try {
-//            authApi.authenticate()
-//            println("sukses")
-//            Resource.Success(Unit)
-//        } catch (e: IOException) {
-//            Resource.Error(
-//                uiText = UiText.StringResource(R.string.error_couldnt_reach_server)
-//            )
-//        } catch (e: Exception) {
-//            Resource.Error(
-//                uiText = UiText.StringResource(R.string.oops_something_went_wrong)
-//            )
-//        } catch (e: RedirectResponseException) {
-//            Resource.Error(
-//                uiText = UiText.StringResource(R.string.oops_redirect_error)
-//            )
-//        } catch (e: ServerResponseException) {
-//            Resource.Error(
-//                uiText = UiText.StringResource(R.string.oops_server_error)
-//            )
-//        } catch (e: ClientRequestException) {
-//            Resource.Error(
-//                uiText = UiText.StringResource(R.string.oops_client_error)
-//            )
-//        }
     }
 }

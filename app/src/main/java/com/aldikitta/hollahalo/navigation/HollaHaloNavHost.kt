@@ -1,5 +1,6 @@
 package com.aldikitta.hollahalo.navigation
 
+import android.util.Log
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,9 +24,11 @@ fun HollaHaloNavHost(
     mainViewModel: MainViewModel = hiltViewModel(),
 ) {
     val uiState by mainViewModel.startDestination.collectAsStateWithLifecycle()
+    Log.d("TAG", "destination: ${uiState.startDestination}")
     NavHost(
         navController = navHostController,
-        startDestination = signInGraphRoutePattern
+//        startDestination = signInGraphRoutePattern
+        startDestination = uiState.startDestination,
     ) {
         signInGraph(
             navController = navHostController,

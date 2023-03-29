@@ -1,11 +1,8 @@
 package com.aldikitta.hollahalo.ui
 
 import androidx.compose.animation.*
-import androidx.compose.animation.core.spring
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
@@ -30,7 +27,6 @@ import com.aldikitta.hollahalo.navigation.TopLevelDestination
 
 @OptIn(
     ExperimentalComposeUiApi::class,
-    ExperimentalMaterial3Api::class,
 )
 @Composable
 fun HollaHaloAppMain(
